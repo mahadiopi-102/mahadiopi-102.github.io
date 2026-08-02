@@ -130,9 +130,13 @@
   --amber-glow-2: rgba(184, 121, 28, 0.08);
   --amber-glow-1-hover: rgba(184, 121, 28, 0.32);
   --amber-glow-2-hover: rgba(184, 121, 28, 0.14);
-  --amber-glass-a: rgba(184, 121, 28, 0.1);
-  --amber-glass-b: rgba(8, 13, 24, 0.9);
-  --amber-glass-c: rgba(184, 121, 28, 0.04);
+  /* Light glass base — was a copy-paste of dark's near-black base
+     (rgba(8,13,24,0.9)), which made every glass-card render solid black
+     in light mode. This needs to be light so the card reads as frosted
+     glass over the light page, not a dark panel. */
+  --amber-glass-a: rgba(184, 121, 28, 0.12);
+  --amber-glass-b: rgba(255, 255, 255, 0.85);
+  --amber-glass-c: rgba(184, 121, 28, 0.05);
 }
 
 /* ── DARK (default) ──
