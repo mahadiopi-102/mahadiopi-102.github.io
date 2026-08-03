@@ -31,13 +31,15 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label="Switch theme"
       aria-pressed={!isDark}
-      className="relative h-6 w-11 shrink-0 rounded-full border border-line bg-bg-2 transition-colors duration-fast"
+      className="flex size-11 shrink-0 items-center justify-center"
     >
-      <span
-        className="absolute top-0.5 left-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-amber text-[10px] transition-transform duration-fast ease-out-token"
-        style={{ transform: isDark ? 'translateX(0)' : 'translateX(20px)' }}
-      >
-        {isDark ? '🌙' : '☀️'}
+      <span className="relative h-6 w-11 rounded-full border border-line bg-bg-2 transition-colors duration-fast">
+        <span
+          className="absolute top-0.5 left-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-amber text-[10px] transition-transform duration-fast ease-out-token"
+          style={{ transform: isDark ? 'translateX(0)' : 'translateX(20px)' }}
+        >
+          {isDark ? '🌙' : '☀️'}
+        </span>
       </span>
     </button>
   );

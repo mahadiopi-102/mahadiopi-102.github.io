@@ -35,7 +35,7 @@
   --color-line-2: var(--line-2);
 
   /* type scale — fixed steps, not improvised clamps */
-  --text-hero: clamp(3.2rem, 8vw, 6.4rem);
+  --text-hero: clamp(3.2rem, 8vw, 6rem);
   --text-hero--line-height: 0.92;
   --text-hero--letter-spacing: -0.03em;
   --text-section: clamp(2rem, 4vw, 3.2rem);
@@ -231,7 +231,7 @@
     var(--amber-glass-c)
   );
   border: 1px solid var(--amber-glow-2);
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: border-color 0.3s;
 }
 .glass-card::before {
   content: '';
@@ -251,7 +251,6 @@
 }
 .glass-card:hover {
   border-color: var(--amber-glow-1-hover);
-  box-shadow: 0 0 40px var(--amber-glow-2-hover);
 }
 .glass-card:hover::before {
   animation: shine-sweep 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;

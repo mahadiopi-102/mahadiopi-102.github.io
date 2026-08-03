@@ -18,9 +18,8 @@ export function Proof() {
   return (
     <section id="proof" className="mx-auto w-full max-w-[1160px] border-t border-line px-6 py-24">
       <Reveal>
-        <p className="font-mono text-label uppercase text-ink-4">Proof</p>
-        <h2 className="mt-3 max-w-[24ch] text-section font-bold text-ink">
-          Numbers from the <span className="gradient-text-animated">Upwork</span> profile, not a pitch deck.
+        <h2 className="max-w-[24ch] text-section font-bold text-ink">
+          Numbers from the Upwork profile, not a pitch deck.
         </h2>
       </Reveal>
 
@@ -37,7 +36,7 @@ export function Proof() {
         whileInView="visible"
         viewport={ONCE}
         style={tilt.style}
-        className="glass-card relative mt-14 grid grid-cols-2 gap-8 rounded-2xl p-8 sm:grid-cols-4"
+        className="glass-card relative mt-14 flex flex-col gap-8 rounded-2xl p-8 sm:flex-row sm:items-end sm:justify-between"
       >
         <CardParticles particles={particles.particles} />
         <div>
@@ -48,21 +47,23 @@ export function Proof() {
           />
           <p className="mt-2 text-small text-ink-3">{PROOF.hours.label}</p>
         </div>
-        <div>
-          <CountUp value={PROOF.jobSuccess.value} suffix="%" className="text-section font-bold text-ink" />
-          <p className="mt-2 text-small text-ink-3">{PROOF.jobSuccess.label}</p>
-        </div>
-        <div>
-          <CountUp
-            value={PROOF.projects.value}
-            display={PROOF.projects.display}
-            className="text-section font-bold text-ink"
-          />
-          <p className="mt-2 text-small text-ink-3">{PROOF.projects.label}</p>
-        </div>
-        <div>
-          <p className="text-section font-bold text-ink">{PROOF.earned.display}</p>
-          <p className="mt-2 text-small text-ink-3">{PROOF.earned.label}</p>
+        <div className="flex flex-wrap gap-x-8 gap-y-5 border-t border-line pt-6 sm:border-l sm:border-t-0 sm:pl-8 sm:pt-0">
+          <div>
+            <CountUp value={PROOF.jobSuccess.value} suffix="%" className="text-lead font-bold text-ink" />
+            <p className="mt-1 text-small text-ink-3">{PROOF.jobSuccess.label}</p>
+          </div>
+          <div>
+            <CountUp
+              value={PROOF.projects.value}
+              display={PROOF.projects.display}
+              className="text-lead font-bold text-ink"
+            />
+            <p className="mt-1 text-small text-ink-3">{PROOF.projects.label}</p>
+          </div>
+          <div>
+            <p className="text-lead font-bold text-ink">{PROOF.earned.display}</p>
+            <p className="mt-1 text-small text-ink-3">{PROOF.earned.label}</p>
+          </div>
         </div>
       </motion.div>
 

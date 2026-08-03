@@ -24,14 +24,21 @@ export function useTilt(strength = 4) {
   const rotateX = useSpring(rawRX, SPRING);
   const rotateY = useSpring(rawRY, SPRING);
   const scale = useSpring(rawScale, SPRING);
+  const rafId = useRef<number | null>(null);
 
   function onMouseMove(e: MouseEvent<HTMLDivElement>) {
     const el = ref.current;
     if (!el) return;
-    const r = el.getBoundingClientRect();
-    rawRY.set(((e.clientX - (r.left + r.width / 2)) / (r.width / 2)) * strength);
-    rawRX.set(((e.clientY - (r.top + r.height / 2)) / (r.height / 2)) * -strength);
-    rawScale.set(1.015);
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    if (rafId.current !== null) return;
+    rafId.current = requestAnimationFrame(() => {
+      rafId.current = null;
+      const r = el.getBoundingClientRect();
+      rawRY.set(((clientX - (r.left + r.width / 2)) / (r.width / 2)) * strength);
+      rawRX.set(((clientY - (r.top + r.height / 2)) / (r.height / 2)) * -strength);
+      rawScale.set(1.015);
+    });
   }
 
   function onMouseLeave() {

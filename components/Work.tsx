@@ -78,9 +78,8 @@ export function Work() {
   return (
     <section id="work" className="mx-auto w-full max-w-[1160px] border-t border-line px-6 py-24">
       <Reveal>
-        <p className="font-mono text-label uppercase text-ink-4">Work</p>
-        <h2 className="mt-3 max-w-[24ch] text-section font-bold text-ink">
-          Real edits, real client <span className="gradient-text-animated">work</span>.
+        <h2 className="max-w-[24ch] text-section font-bold text-ink">
+          Real edits, real client work.
         </h2>
       </Reveal>
 

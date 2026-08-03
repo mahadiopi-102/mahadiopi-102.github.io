@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 import { Reveal } from '@/components/Reveal';
 import { ProcessVisualPanel } from '@/components/ProcessVisual';
 import { PROCESS_STEPS, TURNAROUND, OPINION, type ProcessStep } from '@/content/process';
-import { DUR, EASE_OUT } from '@/lib/motion';
+import { DUR, EASE_OUT, lineWipe, ONCE } from '@/lib/motion';
 import { useTilt } from '@/lib/useTilt';
 import { useCardParticles } from '@/lib/useCardParticles';
 import { CardParticles } from '@/components/CardParticles';
@@ -62,12 +62,19 @@ export function Process() {
 
   return (
     <section id="process" className="mx-auto w-full max-w-[1160px] border-t border-line px-6 py-24">
-      <Reveal>
-        <p className="font-mono text-label uppercase text-ink-4">Process</p>
-        <h2 className="mt-3 max-w-[24ch] text-section font-bold text-ink">
-          Six things done the same <span className="gradient-text-animated">way</span>, every time.
-        </h2>
-      </Reveal>
+      <h2 className="max-w-[24ch] text-section font-bold text-ink">
+        <span className="block overflow-hidden">
+          <motion.span
+            className="block"
+            variants={lineWipe}
+            initial="hidden"
+            whileInView="visible"
+            viewport={ONCE}
+          >
+            Six things done the same way, every time.
+          </motion.span>
+        </span>
+      </h2>
 
       <Reveal className="mt-10 grid gap-8 rounded-2xl border border-line bg-surface p-8 sm:grid-cols-3">
         {TURNAROUND.map((stat) => (

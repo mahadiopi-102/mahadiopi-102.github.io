@@ -34,9 +34,8 @@ export function Services() {
   return (
     <section id="services" className="mx-auto w-full max-w-[1160px] border-t border-line px-6 py-24">
       <Reveal>
-        <p className="font-mono text-label uppercase text-ink-4">Services</p>
-        <h2 className="mt-3 max-w-[24ch] text-section font-bold text-ink">
-          Four formats, one <span className="gradient-text-animated">process</span>.
+        <h2 className="max-w-[24ch] text-section font-bold text-ink">
+          Four formats, one process.
         </h2>
       </Reveal>
 

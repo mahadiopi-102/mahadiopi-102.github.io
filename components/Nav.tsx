@@ -69,6 +69,7 @@ export function Nav() {
               size="icon"
               aria-label="Open menu"
               onClick={() => setOpen(true)}
+              className="size-11"
             >
               <MenuIcon />
             </Button>

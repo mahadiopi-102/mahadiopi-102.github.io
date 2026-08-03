@@ -67,12 +67,9 @@ export function Testimonials() {
   return (
     <section className="mx-auto w-full max-w-[1160px] border-t border-line px-6 py-24">
       <Reveal className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="font-mono text-label uppercase text-ink-4">Testimonials</p>
-          <h2 className="mt-3 max-w-[24ch] text-section font-bold text-ink">
-            Five completed Upwork <span className="gradient-text-animated">contracts</span>.
-          </h2>
-        </div>
+        <h2 className="max-w-[24ch] text-section font-bold text-ink">
+          Five completed Upwork contracts.
+        </h2>
         <a
           href={SITE.upwork}
           target="_blank"

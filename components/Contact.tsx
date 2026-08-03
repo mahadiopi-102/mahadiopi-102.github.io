@@ -89,11 +89,10 @@ export function Contact() {
   return (
     <section id="contact" className="mx-auto w-full max-w-[1160px] border-t border-line px-6 py-24">
       <Reveal>
-        <p className="font-mono text-label uppercase text-ink-4">Contact</p>
-        <h2 className="group mt-3 max-w-[24ch] text-section font-bold text-ink">
+        <h2 className="group max-w-[24ch] text-section font-bold text-ink">
           <span className="block overflow-hidden">
             <span className="block transition-transform duration-700 ease-out-token group-hover:-translate-y-[8%]">
-              Tell me what you <span className="gradient-text-animated">publish</span>.
+              Tell me what you publish.
             </span>
           </span>
         </h2>
