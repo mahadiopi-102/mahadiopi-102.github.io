@@ -4,8 +4,8 @@
  */
 export const SITE = {
   /** Absolute site URL. Needed for og:image to resolve — preview scrapers
-   *  do not follow relative paths. BLOCKER: set once the domain is bought. */
-  url: '',
+   *  do not follow relative paths. */
+  url: 'https://mahadiopi-102.github.io',
 
   /** BLOCKER. While this is empty the contact form falls through to a
    *  mailto: link, which silently drops the visitor's email address and
