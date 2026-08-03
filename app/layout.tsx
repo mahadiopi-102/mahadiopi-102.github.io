@@ -46,7 +46,9 @@ try {
  * Soft geo-gate for Bangladesh-based visitors (local competitors sizing up
  * the site). ?preview=1 sets a permanent localStorage bypass for Opi's own
  * access — that link never expires and works from any device. Everyone
- * else gets a one-time-per-session lookup against ipapi.co's free tier.
+ * else gets a one-time-per-session lookup against ipwho.is's free tier
+ * (ipapi.co started returning a Cloudflare bot-challenge instead of JSON,
+ * which silently failed every lookup open — ipwho.is has no such gate).
  * Fails open (page reveals) on API error/timeout so a real client is never
  * blocked by a flaky geo lookup — this is a deterrent, not a hard wall.
  */
@@ -72,11 +74,11 @@ const GEO_GATE = `
     };
     var timer = setTimeout(reveal, 2500);
 
-    fetch('https://ipapi.co/json/')
+    fetch('https://ipwho.is/')
       .then(function (r) { return r.json(); })
       .then(function (d) {
         clearTimeout(timer);
-        if (d && d.country_code === 'BD') {
+        if (d && d.success !== false && d.country_code === 'BD') {
           sessionStorage.setItem('opi-geo', 'blocked');
           window.location.replace('https://www.google.com');
         } else {
