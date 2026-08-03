@@ -42,6 +42,58 @@ try {
 } catch (e) {}
 `;
 
+/**
+ * Soft geo-gate for Bangladesh-based visitors (local competitors sizing up
+ * the site). ?preview=1 sets a permanent localStorage bypass for Opi's own
+ * access — that link never expires and works from any device. Everyone
+ * else gets a one-time-per-session lookup against ipapi.co's free tier.
+ * Fails open (page reveals) on API error/timeout so a real client is never
+ * blocked by a flaky geo lookup — this is a deterrent, not a hard wall.
+ */
+const GEO_GATE = `
+(function () {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('preview') === '1') {
+      localStorage.setItem('opi-allow', '1');
+    }
+    if (localStorage.getItem('opi-allow') === '1') return;
+
+    var cached = sessionStorage.getItem('opi-geo');
+    if (cached === 'ok') return;
+    if (cached === 'blocked') {
+      window.location.replace('https://www.google.com');
+      return;
+    }
+
+    document.documentElement.style.visibility = 'hidden';
+    var reveal = function () {
+      document.documentElement.style.visibility = 'visible';
+    };
+    var timer = setTimeout(reveal, 2500);
+
+    fetch('https://ipapi.co/json/')
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        clearTimeout(timer);
+        if (d && d.country_code === 'BD') {
+          sessionStorage.setItem('opi-geo', 'blocked');
+          window.location.replace('https://www.google.com');
+        } else {
+          sessionStorage.setItem('opi-geo', 'ok');
+          reveal();
+        }
+      })
+      .catch(function () {
+        clearTimeout(timer);
+        reveal();
+      });
+  } catch (e) {
+    document.documentElement.style.visibility = 'visible';
+  }
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -53,6 +105,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <script dangerouslySetInnerHTML={{ __html: GEO_GATE }} />
         <script dangerouslySetInnerHTML={{ __html: NO_FLASH }} />
       </head>
       <body className="min-h-full flex flex-col">
