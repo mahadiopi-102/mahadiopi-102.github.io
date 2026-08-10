@@ -57,6 +57,19 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
 
+  /* Durations for CSS-land transitions. Tailwind v4 resolves `duration-*`
+     against the `--transition-duration-*` namespace, not `--duration-*` —
+     these were missing entirely, so every `duration-fast`/`duration-base`
+     in the codebase silently fell back to Tailwind's 150ms default.
+
+     These are hover/state durations and deliberately NOT the same numbers
+     as lib/motion.ts's DUR. That scale (fast .18 / base .42) drives
+     scroll-reveal entrances, where 420ms reads as considered. Reusing 420ms
+     for a hover crossfade would put it well over the 300ms ceiling UI
+     motion should stay under. Same family, different tier. */
+  --transition-duration-fast: 180ms;
+  --transition-duration-base: 260ms;
+
   /* shadcn slots */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -248,17 +261,13 @@
     transparent 60%
   );
   transform: translateX(-100%);
+  transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .glass-card:hover {
   border-color: var(--amber-glow-1-hover);
 }
 .glass-card:hover::before {
-  animation: shine-sweep 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-@keyframes shine-sweep {
-  to {
-    transform: translateX(100%);
-  }
+  transform: translateX(100%);
 }
 
 @keyframes shimmer {
@@ -340,11 +349,11 @@
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  animation: border-beam-spin 5s linear infinite;
+  animation: border-beam-spin 5s linear 2;
 }
 
 .hover-magnetic {
-  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .hover-magnetic:hover {
   transform: scale(1.02);

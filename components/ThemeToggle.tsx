@@ -35,7 +35,7 @@ export function ThemeToggle() {
     >
       <span className="relative h-6 w-11 rounded-full border border-line bg-bg-2 transition-colors duration-fast">
         <span
-          className="absolute top-0.5 left-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-amber text-[10px] transition-transform duration-fast ease-out-token"
+          className="absolute top-0.5 left-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-amber text-[10px] transition-transform duration-fast ease-out"
           style={{ transform: isDark ? 'translateX(0)' : 'translateX(20px)' }}
         >
           {isDark ? '🌙' : '☀️'}

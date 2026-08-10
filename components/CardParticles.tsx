@@ -34,11 +34,10 @@ export function CardParticles({ particles }: { particles: Particle[] }) {
               key={p.id}
               className="absolute rounded-full bg-amber shadow-[0_0_6px_1px_var(--amber)]"
               style={{ width: p.size, height: p.size, left: g.left, top: g.top }}
-              initial={{ opacity: 0, x: 0, y: 0 }}
+              initial={{ opacity: 0, transform: 'translate(0px, 0px)' }}
               animate={{
                 opacity: [0, 0.9, 0],
-                x: g.dx * 16,
-                y: g.dy * 16,
+                transform: `translate(${g.dx * 16}px, ${g.dy * 16}px)`,
               }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1.6, ease: 'easeOut', times: [0, 0.35, 1] }}

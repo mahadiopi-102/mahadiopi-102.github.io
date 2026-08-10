@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, type FormEvent, type ReactNode } from 'react';
+import { motion } from 'motion/react';
 import { MailIcon, ArrowUpRightIcon } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
+import { DUR, EASE_OUT } from '@/lib/motion';
 import { SITE } from '@/content/site';
 import { WhatsAppIcon, InstagramIcon } from '@/components/BrandIcons';
 
@@ -37,7 +39,7 @@ function ContactChannel({
       className="group flex items-center gap-4 rounded-xl border border-line bg-bg-2 p-4 transition-colors duration-fast hover:border-amber/40"
     >
       <span className="relative flex size-11 shrink-0 items-center justify-center">
-        <span className="absolute inset-0 rounded-full border border-line bg-transparent transition-all duration-base ease-out-token group-hover:scale-110 group-hover:border-amber group-hover:bg-amber" />
+        <span className="absolute inset-0 rounded-full border border-line bg-transparent transition-all duration-base ease-out group-hover:scale-110 group-hover:border-amber group-hover:bg-amber" />
         <span className="relative text-ink-2 transition-colors duration-base group-hover:text-bg">
           {icon}
         </span>
@@ -91,7 +93,7 @@ export function Contact() {
       <Reveal>
         <h2 className="group max-w-[24ch] text-section font-bold text-ink">
           <span className="block overflow-hidden">
-            <span className="block transition-transform duration-700 ease-out-token group-hover:-translate-y-[8%]">
+            <span className="block transition-transform duration-700 ease-out group-hover:-translate-y-[8%]">
               Tell me what you publish.
             </span>
           </span>
@@ -143,24 +145,40 @@ export function Contact() {
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="glow-breathe mt-2 rounded-md bg-amber px-6 py-3 text-small font-medium text-bg transition-transform duration-fast hover:-translate-y-px disabled:opacity-60"
+            className="glow-breathe mt-2 rounded-md bg-amber px-6 py-3 text-small font-medium text-bg transition-transform duration-fast hover:-translate-y-px active:translate-y-0 active:scale-[0.98] disabled:opacity-60"
           >
             {status === 'submitting' ? 'Sending…' : 'Send message'}
           </button>
 
+          {/* The one moment on the page where a visitor takes a real action
+              and waits on a result — it used to just teleport in. Global
+              MotionConfig reducedMotion="user" drops the y-travel and keeps
+              the fade for anyone who asked for less motion. */}
           {status === 'success' && (
-            <p role="status" className="text-small text-amber">
+            <motion.p
+              role="status"
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: DUR.fast, ease: EASE_OUT }}
+              className="text-small text-amber"
+            >
               Sent. I reply within a day.
-            </p>
+            </motion.p>
           )}
           {status === 'error' && (
-            <p role="alert" className="text-small text-destructive">
+            <motion.p
+              role="alert"
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: DUR.fast, ease: EASE_OUT }}
+              className="text-small text-destructive"
+            >
               Something went wrong. Email me directly at{' '}
               <a href={`mailto:${SITE.email}`} className="underline">
                 {SITE.email}
               </a>
               .
-            </p>
+            </motion.p>
           )}
         </form>
 
@@ -172,12 +190,12 @@ export function Contact() {
             </span>
             <span
               aria-hidden
-              className="h-px w-4 shrink-0 bg-line transition-all duration-500 ease-out-token group-hover:w-0 group-hover:opacity-0"
+              className="h-px w-4 shrink-0 bg-line transition-all duration-500 ease-out group-hover:w-0 group-hover:opacity-0"
             />
             <p className="whitespace-nowrap font-mono text-label uppercase text-ink-4">Reach me directly</p>
             <span
               aria-hidden
-              className="h-px flex-1 bg-line transition-all duration-500 ease-out-token group-hover:scale-x-0"
+              className="h-px flex-1 bg-line transition-all duration-500 ease-out group-hover:scale-x-0"
               style={{ transformOrigin: 'right' }}
             />
           </div>

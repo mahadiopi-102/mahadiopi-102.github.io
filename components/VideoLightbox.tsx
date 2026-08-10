@@ -29,7 +29,7 @@ export function VideoLightboxProvider({ children }: { children: ReactNode }) {
         <Dialog.Portal>
           <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm transition-opacity duration-200 data-ending-style:opacity-0 data-starting-style:opacity-0" />
           <Dialog.Popup className="fixed inset-0 z-50 flex items-center justify-center p-4 outline-none">
-            <div className="relative w-full max-w-3xl transition-all duration-200 data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0">
+            <div className="relative w-full max-w-3xl transition-[transform,opacity] duration-200 data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0">
               <div className="aspect-video w-full overflow-hidden rounded-xl border border-line bg-black">
                 {youtubeId && (
                   <iframe

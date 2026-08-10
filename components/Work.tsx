@@ -35,7 +35,7 @@ function WorkCard({ item, vertical }: { item: ReturnType<typeof laneItems>[numbe
       <button
         type="button"
         onClick={() => open(item.youtubeId)}
-        className="block w-full text-left"
+        className="block w-full text-left transition-transform duration-fast active:scale-[0.98]"
         aria-label={`Play ${item.title}`}
       >
         <div className={`relative w-full ${vertical ? 'aspect-[9/16]' : 'aspect-video'}`}>
@@ -44,7 +44,7 @@ function WorkCard({ item, vertical }: { item: ReturnType<typeof laneItems>[numbe
             alt={item.title}
             fill
             sizes={vertical ? '200px' : '300px'}
-            className="object-cover transition-transform duration-base ease-out-token group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-base ease-out group-hover:scale-[1.03]"
             onError={() => setStep((s) => s + 1)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity duration-fast group-hover:opacity-100" />

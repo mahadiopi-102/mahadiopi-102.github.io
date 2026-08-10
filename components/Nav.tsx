@@ -51,7 +51,7 @@ export function Nav() {
           <ThemeToggle />
           <a
             href="#contact"
-            className="hover-magnetic glow-breathe rounded-md bg-amber px-4 py-2 text-small font-medium text-bg"
+            className="hover-magnetic rounded-md bg-amber px-4 py-2 text-small font-medium text-bg"
           >
             Message me
           </a>
@@ -70,20 +70,25 @@ export function Nav() {
             >
               <MenuIcon />
             </Button>
-            <SheetContent side="right" className="w-4/5 bg-surface px-2">
+            <SheetContent side="right" className="group w-4/5 bg-surface px-2">
               <SheetHeader>
                 <SheetTitle className="font-mono text-small text-ink">
                   Opi<span className="text-amber">.</span>recut
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4">
-                {NAV_LINKS.map((link) => (
+                {NAV_LINKS.map((link, i) => (
                   <SheetClose
                     key={link.href}
                     render={
                       <a
                         href={link.href}
-                        className="border-b border-line py-3 text-lead text-ink-2"
+                        /* Staggered off the panel's own entrance: base-ui puts
+                           data-starting-style on the popup for one frame, so
+                           the group variant gives each link a start state and
+                           the delay walks them in behind the panel. */
+                        className="border-b border-line py-3 text-lead text-ink-2 transition-[opacity,translate] duration-fast group-data-starting-style:translate-x-3 group-data-starting-style:opacity-0"
+                        style={{ transitionDelay: `${i * 35}ms` }}
                       />
                     }
                   >
