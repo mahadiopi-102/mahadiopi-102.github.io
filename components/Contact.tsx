@@ -150,7 +150,7 @@ export function Contact() {
 
           {status === 'success' && (
             <p role="status" className="text-small text-amber">
-              Sent — I reply within a day.
+              Sent. I reply within a day.
             </p>
           )}
           {status === 'error' && (

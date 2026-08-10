@@ -104,7 +104,7 @@ export function Hero() {
           />
         </div>
         <p className="text-small text-ink-3">
-          <span className="font-medium text-ink">Mahadi Hasan Opi</span> — editor
+          <span className="font-medium text-ink">Mahadi Hasan Opi</span>, editor
         </p>
       </motion.div>
     </section>

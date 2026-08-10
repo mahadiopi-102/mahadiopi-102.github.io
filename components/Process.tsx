@@ -127,7 +127,7 @@ export function Process() {
       <Reveal className="mt-16 border-t border-line pt-10">
         <p className="max-w-[60ch] text-lead text-ink-2">&ldquo;{OPINION.text}&rdquo;</p>
         <p className="mt-4 font-mono text-label uppercase text-ink-4">
-          &mdash; {OPINION.attribution}
+          - {OPINION.attribution}
         </p>
       </Reveal>
     </section>

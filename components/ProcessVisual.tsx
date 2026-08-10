@@ -40,9 +40,9 @@ export function ProcessVisualPanel({ kind }: { kind: ProcessVisual }) {
             <span className="block h-2 w-2 rounded-full bg-amber" />
           </div>
           <div className="flex min-w-0 flex-col gap-2 text-label text-ink-2">
-            <span className="truncate">Hook A — curiosity</span>
-            <span className="truncate">Hook B — bold claim</span>
-            <span className="truncate">Hook C — pattern break</span>
+            <span className="truncate">Hook A: curiosity</span>
+            <span className="truncate">Hook B: bold claim</span>
+            <span className="truncate">Hook C: pattern break</span>
           </div>
         </div>
       );

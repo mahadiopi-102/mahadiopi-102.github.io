@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { MenuIcon } from 'lucide-react';
+import { useMotionValueEvent, useScroll } from 'motion/react';
 import {
   Sheet,
   SheetClose,
@@ -18,12 +19,8 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, 'change', (latest) => setScrolled(latest > 8));
 
   return (
     <header className="fixed inset-x-0 top-4 z-40 flex justify-center px-4">
