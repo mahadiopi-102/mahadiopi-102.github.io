@@ -207,6 +207,21 @@
   body {
     @apply bg-background text-foreground text-body antialiased;
   }
+  /* Shared default focus ring for the site's bespoke `<a>`/`<button>`
+     elements (Nav, Hero, WorkCard, Services, Process, Testimonials,
+     Footer, ThemeToggle) — none of them style their own focus state, so
+     without this keyboard users get whatever the browser defaults to.
+     Vendored shadcn primitives (Button, Sheet, Accordion) already set
+     `outline-none` + their own ring utility; Tailwind's utilities layer
+     loads after this base layer, so those keep winning here — no
+     double ring. */
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;

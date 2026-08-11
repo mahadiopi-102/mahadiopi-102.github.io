@@ -35,7 +35,9 @@ export function CountUp({
   }, [spring, value, display, suffix]);
 
   return (
-    <span ref={ref} className={className}>
+    /* tabular-nums: proportional figures shift width as digits change
+       mid-count (1 -> 15 -> 1,500), jittering the layout around it. */
+    <span ref={ref} className={`tabular-nums ${className ?? ''}`}>
       0{suffix}
     </span>
   );
