@@ -29,6 +29,19 @@ export const metadata: Metadata = {
   },
 };
 
+/** Person schema — real, verifiable entity data only (mirrors PROOF's
+ *  own rule: nothing on this site is a claim a visitor can't check). */
+const PERSON_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Mahadi Hasan Opi',
+  jobTitle: 'Short-form video editor',
+  url: SITE.url,
+  email: `mailto:${SITE.email}`,
+  image: `${SITE.url}/opi.jpg`,
+  sameAs: [SITE.upwork, SITE.instagram],
+};
+
 /**
  * Applies the stored theme before first paint. Without this the page ships
  * dark (the default class below), then flips to light after hydration for
@@ -109,6 +122,10 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: GEO_GATE }} />
         <script dangerouslySetInnerHTML={{ __html: NO_FLASH }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(PERSON_JSON_LD) }}
+        />
       </head>
       <body className="min-h-full flex flex-col">
         {/* reducedMotion="user" replaces every manual prefers-reduced-motion
