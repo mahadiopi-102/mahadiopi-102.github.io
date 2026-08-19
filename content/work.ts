@@ -106,9 +106,9 @@ export const WORK: WorkItem[] = [
     poster: '/posters/finance.webp',
   },
 
-  // ── ads — curated order, 2026-08-02. Cap is 5: "Real estate" (0:55) and
-  //    Fund manager are kept in the data but not featured, since Opi
-  //    deprioritized/didn't place them.
+  // ── ads — reordered 2026-08-20 per Opi. Healthcare dropped from the
+  //    lane entirely (not just unfeatured). Fund manager placed
+  //    immediately before "Real estate" at his request.
   {
     lane: 'ads',
     title: 'Real estate, price hook',
@@ -127,11 +127,26 @@ export const WORK: WorkItem[] = [
   },
   {
     lane: 'ads',
+    title: 'Financial planner',
+    duration: '1:00',
+    youtubeId: '2g4-B1XLnSE',
+    poster: '/posters/financial-planner.webp',
+    featured: true,
+  },
+  {
+    lane: 'ads',
+    title: 'Furniture',
+    duration: '0:27',
+    youtubeId: 'm_mIvZAiU7s',
+    poster: '/posters/furniture-ugc.webp',
+    featured: true,
+  },
+  {
+    lane: 'ads',
     title: 'Business launch',
     duration: '1:21',
     youtubeId: 'imlgE-__oCc',
     poster: '/posters/business-launch.webp',
-    featured: true,
   },
   {
     lane: 'ads',
@@ -139,22 +154,6 @@ export const WORK: WorkItem[] = [
     duration: '0:38',
     youtubeId: 'ymKlxUuHS6c',
     poster: '/posters/real-estate-reel.webp',
-    featured: true,
-  },
-  {
-    lane: 'ads',
-    title: 'Healthcare',
-    duration: '0:30',
-    youtubeId: '6VEU-TdMjtQ',
-    poster: '/posters/healthcare.webp',
-    featured: true,
-  },
-  {
-    lane: 'ads',
-    title: 'Real estate',
-    duration: '0:55',
-    youtubeId: 'vLRl1aU9SFQ',
-    poster: '/posters/real-estate.webp',
   },
   {
     lane: 'ads',
@@ -165,17 +164,10 @@ export const WORK: WorkItem[] = [
   },
   {
     lane: 'ads',
-    title: 'Furniture',
-    duration: '0:27',
-    youtubeId: 'm_mIvZAiU7s',
-    poster: '/posters/furniture-ugc.webp',
-  },
-  {
-    lane: 'ads',
-    title: 'Financial planner',
-    duration: '1:00',
-    youtubeId: '2g4-B1XLnSE',
-    poster: '/posters/financial-planner.webp',
+    title: 'Real estate',
+    duration: '0:55',
+    youtubeId: 'vLRl1aU9SFQ',
+    poster: '/posters/real-estate.webp',
   },
 
   // ── brand film ──

@@ -1,11 +1,9 @@
 'use client';
 
-import { ArrowUpRightIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Reveal } from '@/components/Reveal';
 import { CountUp } from '@/components/CountUp';
 import { PROOF } from '@/content/proof';
-import { SITE } from '@/content/site';
 import { reveal, ONCE } from '@/lib/motion';
 import { useTilt } from '@/lib/useTilt';
 import { useCardParticles } from '@/lib/useCardParticles';
@@ -73,15 +71,11 @@ export function Proof() {
             Top Rated
           </span>
         )}
-        <a
-          href={SITE.upwork}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="glow-breathe inline-flex items-center gap-1.5 rounded-full border border-amber/40 bg-amber-dim px-3.5 py-1.5 text-ink-2 transition-colors duration-fast hover:border-amber hover:text-ink"
-        >
+        {/* Not a link for now, on Opi's request — text stays but it
+            shouldn't redirect anywhere yet. */}
+        <span className="glow-breathe inline-flex items-center gap-1.5 rounded-full border border-amber/40 bg-amber-dim px-3.5 py-1.5 text-ink-2">
           View verified profile on Upwork
-          <ArrowUpRightIcon className="size-3.5" />
-        </a>
+        </span>
       </Reveal>
     </section>
   );
