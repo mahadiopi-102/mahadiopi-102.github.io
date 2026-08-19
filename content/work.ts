@@ -163,6 +163,20 @@ export const WORK: WorkItem[] = [
     youtubeId: 'e4zoLrocHBg',
     poster: '/posters/fund-manager.webp',
   },
+  {
+    lane: 'ads',
+    title: 'Furniture',
+    duration: '0:27',
+    youtubeId: 'm_mIvZAiU7s',
+    poster: '/posters/furniture-ugc.webp',
+  },
+  {
+    lane: 'ads',
+    title: 'Financial planner',
+    duration: '1:00',
+    youtubeId: '2g4-B1XLnSE',
+    poster: '/posters/financial-planner.webp',
+  },
 
   // ── brand film ──
   // Moved out of the ads lane: these are cinematic brand work, not UGC ad
