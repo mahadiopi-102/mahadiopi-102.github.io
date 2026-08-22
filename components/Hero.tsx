@@ -73,15 +73,23 @@ export function Hero() {
           <motion.a
             variants={reveal}
             href="#contact"
-            className="glow-breathe rounded-md bg-amber px-6 py-3 text-small font-medium text-bg transition-transform duration-fast hover:-translate-y-px"
+            className="border-beam-btn rounded-md bg-amber px-6 py-3 text-small font-medium text-bg transition-transform duration-fast hover:-translate-y-px"
           >
             Message me
           </motion.a>
           <motion.a
             variants={reveal}
             href="#work"
-            className="rounded-md border border-line px-6 py-3 text-small font-medium text-ink transition-colors duration-fast hover:border-ink-4"
+            className="dot-border-btn rounded-md border border-line px-6 py-3 text-small font-medium text-ink transition-colors duration-fast hover:border-ink-4"
           >
+            <span className="dash top" aria-hidden="true" />
+            <span className="dash right" aria-hidden="true" />
+            <span className="dash bottom" aria-hidden="true" />
+            <span className="dash left" aria-hidden="true" />
+            <span className="dot top left" aria-hidden="true" />
+            <span className="dot top right" aria-hidden="true" />
+            <span className="dot bottom right" aria-hidden="true" />
+            <span className="dot bottom left" aria-hidden="true" />
             See the work
           </motion.a>
         </motion.div>

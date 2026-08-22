@@ -51,7 +51,7 @@ export function Nav() {
           <ThemeToggle />
           <a
             href="#contact"
-            className="hover-magnetic rounded-md bg-amber px-4 py-2 text-small font-medium text-bg"
+            className="hover-magnetic border-beam-btn rounded-md bg-amber px-4 py-2 text-small font-medium text-bg"
           >
             Message me
           </a>

@@ -38,7 +38,11 @@ function ContactChannel({
       rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
       className="group flex items-center gap-4 rounded-xl border border-line bg-bg-2 p-4 transition-colors duration-fast hover:border-amber/40"
     >
-      <span className="relative flex size-11 shrink-0 items-center justify-center">
+      {/* Press feedback borrowed from threeui's Circle Buttons (MIT) --
+          just the :active scale, not its orbiting-aura idle spin, which
+          would reintroduce the always-on ambient loop this site's motion
+          review already removed elsewhere. */}
+      <span className="relative flex size-11 shrink-0 items-center justify-center transition-transform duration-fast group-active:scale-95">
         <span className="absolute inset-0 rounded-full border border-line bg-transparent transition-all duration-base ease-out group-hover:scale-110 group-hover:border-amber group-hover:bg-amber" />
         <span className="relative text-ink-2 transition-colors duration-base group-hover:text-bg">
           {icon}

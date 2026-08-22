@@ -374,6 +374,147 @@
   transform: scale(1.02);
 }
 
+/* Hover-gated sibling of .border-beam, ported from threeui's Spinning
+   Border Button (MIT, github.com/MengTo/threeui) and reskinned to reuse
+   the site's own --beam-angle mechanic rather than a second copy of it.
+   Traces in --bg (not --amber) since the button it sits on is already
+   amber-filled — an amber beam over an amber fill has no contrast. Spins
+   only while hovered, unlike .border-beam's on-mount version, so it never
+   costs anything for a visitor who isn't pointing at it. */
+.border-beam-btn {
+  position: relative;
+}
+.border-beam-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0%,
+    transparent 82%,
+    var(--bg) 92%,
+    var(--bg) 96%,
+    transparent 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.border-beam-btn:hover::after {
+  opacity: 0.6;
+  animation: border-beam-spin 2.4s linear infinite;
+}
+
+/* Dot Border Button, ported from threeui (MIT) and reskinned to amber.
+   Four corner dots fly outward and a dashed border draws in on hover —
+   built for a secondary/outlined CTA, paired here with .border-beam-btn
+   on the primary CTA next to it so the hero's two buttons read as a
+   deliberate pair rather than two unrelated effects. */
+.dot-border-btn {
+  --dot-size: 6px;
+  --line-weight: 1px;
+  --beam-speed: 0.35s;
+  position: relative;
+}
+.dot-border-btn .dot {
+  position: absolute;
+  width: var(--dot-size);
+  aspect-ratio: 1;
+  border-radius: 1.5px;
+  background-color: var(--amber);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.dot-border-btn:hover .dot.top.left {
+  top: 50%;
+  left: 14%;
+  animation: dot-border-top-left var(--beam-speed) ease-in-out forwards;
+}
+@keyframes dot-border-top-left {
+  90% { opacity: 0.7; }
+  100% { top: calc(var(--dot-size) * -0.5); left: calc(var(--dot-size) * -0.5); opacity: 1; }
+}
+.dot-border-btn:hover .dot.top.right {
+  top: 50%;
+  right: 14%;
+  animation: dot-border-top-right var(--beam-speed) ease-in-out forwards;
+  animation-delay: calc(var(--beam-speed) * 0.6);
+}
+@keyframes dot-border-top-right {
+  80% { opacity: 0.7; }
+  100% { top: calc(var(--dot-size) * -0.5); right: calc(var(--dot-size) * -0.5); opacity: 1; }
+}
+.dot-border-btn:hover .dot.bottom.right {
+  bottom: 50%;
+  right: 14%;
+  animation: dot-border-bottom-right var(--beam-speed) ease-in-out forwards;
+  animation-delay: calc(var(--beam-speed) * 1.2);
+}
+@keyframes dot-border-bottom-right {
+  80% { opacity: 0.7; }
+  100% { bottom: calc(var(--dot-size) * -0.5); right: calc(var(--dot-size) * -0.5); opacity: 1; }
+}
+.dot-border-btn:hover .dot.bottom.left {
+  bottom: 50%;
+  left: 14%;
+  animation: dot-border-bottom-left var(--beam-speed) ease-in-out forwards;
+  animation-delay: calc(var(--beam-speed) * 1.8);
+}
+@keyframes dot-border-bottom-left {
+  80% { opacity: 0.7; }
+  100% { bottom: calc(var(--dot-size) * -0.5); left: calc(var(--dot-size) * -0.5); opacity: 1; }
+}
+.dot-border-btn .dash {
+  position: absolute;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 calc(var(--line-weight) * 2),
+    var(--amber) calc(var(--line-weight) * 2) calc(var(--line-weight) * 4)
+  );
+  transition: opacity 0.2s;
+  opacity: 0;
+}
+.dot-border-btn .dash.top,
+.dot-border-btn .dash.bottom {
+  left: 0;
+  height: var(--line-weight);
+  width: 100%;
+  transform: scaleX(0);
+}
+.dot-border-btn .dash.left,
+.dot-border-btn .dash.right {
+  top: 0;
+  width: var(--line-weight);
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0 calc(var(--line-weight) * 2),
+    var(--amber) calc(var(--line-weight) * 2) calc(var(--line-weight) * 4)
+  );
+  transform: scaleY(0);
+}
+.dot-border-btn .dash.top { top: calc(var(--line-weight) * -0.5); transform-origin: left; }
+.dot-border-btn .dash.bottom { bottom: calc(var(--line-weight) * -0.5); transform-origin: right; }
+.dot-border-btn .dash.left { left: calc(var(--line-weight) * -0.5); transform-origin: bottom; }
+.dot-border-btn .dash.right { right: calc(var(--line-weight) * -0.5); transform-origin: top; }
+.dot-border-btn:hover .dash {
+  opacity: 0.7;
+  animation: dot-border-draw var(--beam-speed) ease-in-out forwards;
+}
+.dot-border-btn:hover .dash.top { animation-delay: calc(var(--beam-speed) * 0.8); }
+.dot-border-btn:hover .dash.right { animation-delay: calc(var(--beam-speed) * 1.4); }
+.dot-border-btn:hover .dash.bottom { animation-delay: calc(var(--beam-speed) * 2); }
+.dot-border-btn:hover .dash.left { animation-delay: calc(var(--beam-speed) * 2.4); }
+@keyframes dot-border-draw {
+  100% { transform: scale(1); }
+}
+
 /* "Fade Up Line" — from Great UI's animated-link kit (21st.dev). The line
    rises and fades in rather than drawing left-to-right; reads as more
    deliberate than a sweep, less busy in a row of five nav links. */
@@ -404,9 +545,15 @@
   .particle,
   .hover-magnetic,
   .border-beam::after,
+  .border-beam-btn::after,
   .link-fade-line::after,
   .animate-ping {
     animation: none !important;
     transition: none !important;
+  }
+  .dot-border-btn .dot,
+  .dot-border-btn .dash {
+    animation: none !important;
+    opacity: 0 !important;
   }
 }
