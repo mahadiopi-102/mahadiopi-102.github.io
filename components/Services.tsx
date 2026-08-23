@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { motion } from 'motion/react';
 import { Reveal } from '@/components/Reveal';
+import { revealLeft, revealRight, ONCE } from '@/lib/motion';
 import { SERVICES } from '@/content/services';
 import { WORK, LANES, posterFor } from '@/content/work';
 
@@ -40,7 +42,13 @@ export function Services() {
       </Reveal>
 
       <div className="mt-14 grid gap-10 md:grid-cols-[1fr_280px]">
-        <ul className="flex flex-col">
+        <motion.ul
+          variants={revealLeft}
+          initial="hidden"
+          whileInView="visible"
+          viewport={ONCE}
+          className="flex flex-col"
+        >
           {SERVICES.map((service, i) => (
             <li key={service.title} className="border-b border-line last:border-b-0">
               <button
@@ -62,9 +70,15 @@ export function Services() {
               </button>
             </li>
           ))}
-        </ul>
+        </motion.ul>
 
-        <div className="relative hidden aspect-[4/5] overflow-hidden rounded-xl border border-line bg-bg-2 md:block">
+        <motion.div
+          variants={revealRight}
+          initial="hidden"
+          whileInView="visible"
+          viewport={ONCE}
+          className="relative hidden aspect-[4/5] overflow-hidden rounded-xl border border-line bg-bg-2 md:block"
+        >
           {PREVIEWS.map((item, i) => (
             <Image
               key={i}
@@ -78,7 +92,7 @@ export function Services() {
               style={{ opacity: hovered === i ? 1 : 0 }}
             />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -4,7 +4,7 @@ import { useState, type FormEvent, type ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { MailIcon, ArrowUpRightIcon } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
-import { DUR, EASE_OUT } from '@/lib/motion';
+import { DUR, EASE_OUT, revealLeft, revealRight, ONCE } from '@/lib/motion';
 import { SITE } from '@/content/site';
 import { WhatsAppIcon, InstagramIcon } from '@/components/BrandIcons';
 
@@ -107,8 +107,15 @@ export function Contact() {
         </p>
       </Reveal>
 
-      <Reveal className="mt-14 grid gap-10 md:grid-cols-[1fr_1fr]">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      <div className="mt-14 grid gap-10 md:grid-cols-[1fr_1fr]">
+        <motion.form
+          variants={revealLeft}
+          initial="hidden"
+          whileInView="visible"
+          viewport={ONCE}
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-5"
+        >
           <div className="flex flex-col gap-1.5">
             <label htmlFor="name" className="text-small font-medium text-ink-2">
               Name
@@ -118,7 +125,7 @@ export function Contact() {
               name="name"
               type="text"
               required
-              className="rounded-md border border-line bg-bg-2 px-3.5 py-2.5 text-body text-ink outline-none transition-colors duration-fast focus:border-amber"
+              className="rounded-md border border-line bg-bg-2 px-3.5 py-2.5 text-body text-ink outline-none transition-[border-color,box-shadow] duration-fast focus:border-amber focus:shadow-[0_0_12px_var(--amber-glow-2)]"
             />
           </div>
           <div className="flex flex-col gap-1.5">
@@ -130,7 +137,7 @@ export function Contact() {
               name="email"
               type="email"
               required
-              className="rounded-md border border-line bg-bg-2 px-3.5 py-2.5 text-body text-ink outline-none transition-colors duration-fast focus:border-amber"
+              className="rounded-md border border-line bg-bg-2 px-3.5 py-2.5 text-body text-ink outline-none transition-[border-color,box-shadow] duration-fast focus:border-amber focus:shadow-[0_0_12px_var(--amber-glow-2)]"
             />
           </div>
           <div className="flex flex-col gap-1.5">
@@ -142,7 +149,7 @@ export function Contact() {
               name="message"
               rows={4}
               required
-              className="resize-none rounded-md border border-line bg-bg-2 px-3.5 py-2.5 text-body text-ink outline-none transition-colors duration-fast focus:border-amber"
+              className="resize-none rounded-md border border-line bg-bg-2 px-3.5 py-2.5 text-body text-ink outline-none transition-[border-color,box-shadow] duration-fast focus:border-amber focus:shadow-[0_0_12px_var(--amber-glow-2)]"
             />
           </div>
 
@@ -184,9 +191,15 @@ export function Contact() {
               .
             </motion.p>
           )}
-        </form>
+        </motion.form>
 
-        <div className="glow-breathe flex flex-col justify-center gap-4 rounded-2xl border border-amber/30 bg-surface p-8">
+        <motion.div
+          variants={revealRight}
+          initial="hidden"
+          whileInView="visible"
+          viewport={ONCE}
+          className="glow-breathe flex flex-col justify-center gap-4 rounded-2xl border border-amber/30 bg-surface p-8"
+        >
           <div className="group flex items-center gap-3">
             <span className="relative flex size-2 shrink-0">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber opacity-75" />
@@ -226,8 +239,8 @@ export function Contact() {
           </div>
 
           <p className="mt-1 text-small text-ink-4">Fastest reply is the form.</p>
-        </div>
-      </Reveal>
+        </motion.div>
+      </div>
     </section>
   );
 }

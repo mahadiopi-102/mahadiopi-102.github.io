@@ -25,6 +25,32 @@ export const reveal: Variants = {
   },
 };
 
+/**
+ * Column-position variants of `reveal` — 16px of horizontal travel instead
+ * of vertical. Spatial consistency is a valid motion purpose on its own
+ * (not decoration): a left-column element entering from the left and a
+ * right-column element entering from the right shows where each belongs
+ * relative to its neighbor. Reserved for genuine two-column layouts (Hero,
+ * Services, Contact) — a single centered block forced into a direction
+ * would be decoration, not this.
+ */
+export const revealLeft: Variants = {
+  hidden: { opacity: 0, x: -16 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: DUR.base, ease: EASE_OUT },
+  },
+};
+export const revealRight: Variants = {
+  hidden: { opacity: 0, x: 16 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: DUR.base, ease: EASE_OUT },
+  },
+};
+
 /** Container for staggered children. Cap the children at six —
  *  beyond that, animate the container instead. */
 export const stagger: Variants = {

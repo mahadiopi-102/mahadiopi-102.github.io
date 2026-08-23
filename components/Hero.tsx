@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'motion/react';
-import { lineWipe, stagger, reveal, DUR, EASE_OUT } from '@/lib/motion';
+import { lineWipe, stagger, revealLeft, DUR, EASE_OUT } from '@/lib/motion';
 import { SITE } from '@/content/site';
 import { Particles } from '@/components/Particles';
 
@@ -53,7 +53,7 @@ export function Hero() {
         </h1>
 
         <motion.p
-          variants={reveal}
+          variants={revealLeft}
           initial="hidden"
           animate="visible"
           transition={{ delay: 0.3 }}
@@ -71,14 +71,14 @@ export function Hero() {
           className="mt-9 flex flex-wrap items-center gap-4"
         >
           <motion.a
-            variants={reveal}
+            variants={revealLeft}
             href="#contact"
             className="border-beam-btn rounded-md bg-amber px-6 py-3 text-small font-medium text-bg transition-transform duration-fast hover:-translate-y-px"
           >
             Message me
           </motion.a>
           <motion.a
-            variants={reveal}
+            variants={revealLeft}
             href="#work"
             className="dot-border-btn rounded-md border border-line px-6 py-3 text-small font-medium text-ink transition-colors duration-fast hover:border-ink-4"
           >
@@ -96,20 +96,31 @@ export function Hero() {
       </div>
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, scale: 0.98, x: 16 }}
+        animate={{ opacity: 1, scale: 1, x: 0 }}
         transition={{ duration: DUR.slow, ease: EASE_OUT, delay: 0.2 }}
         className="flex w-full max-w-[280px] shrink-0 flex-col items-center gap-3 self-center md:self-auto"
       >
-        <div className="border-beam relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-line">
-          <Image
-            src="/opi.jpg"
-            alt="Mahadi Hasan Opi"
-            fill
-            sizes="280px"
-            className="object-cover"
-            priority
-          />
+        {/* Dissolves into the page background at the bottom edge instead
+            of sitting in a hard-bordered card — the mask fades the photo
+            to transparent so --bg shows through underneath it. */}
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl">
+          <div
+            className="absolute inset-0"
+            style={{
+              maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+            }}
+          >
+            <Image
+              src="/opi.jpg"
+              alt="Mahadi Hasan Opi"
+              fill
+              sizes="280px"
+              className="object-cover"
+              priority
+            />
+          </div>
         </div>
         <p className="text-small text-ink-3">
           <span className="font-medium text-ink">Mahadi Hasan Opi</span>, editor
