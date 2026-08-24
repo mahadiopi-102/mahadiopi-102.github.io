@@ -86,15 +86,25 @@ export function Work() {
       <div className="mt-14 flex flex-col gap-8">
         {LANES.map((lane, i) => (
           <div key={lane.key} className="sticky" style={{ top: `${80 + i * 16}px` }}>
-            <Reveal className="rounded-2xl border border-line bg-surface p-7 shadow-panel md:p-10">
+            {/* border-ink/15, not the default border-line -- the site's own
+                --line token is a 9%-opacity hairline, near-invisible at the
+                scale of a whole-card border like the reference's. Bumped
+                just here, not globally, so the rest of the site's borders
+                (which read fine at that subtlety on smaller elements) are
+                untouched. */}
+            <Reveal className="rounded-2xl border border-ink/15 bg-surface p-7 shadow-panel md:p-10">
               {/* Big number + "Format" + title on the left, the aspect-ratio
                   badge as a pill on the right -- three lanes is a genuine,
                   small sequence (not a generic per-section eyebrow), so the
                   number earns its place here the way it wouldn't as
-                  decoration above every heading on the page. */}
+                  decoration above every heading on the page. Sized to read
+                  at roughly the height of the Format+title+blurb block next
+                  to it, same proportion as the reference, not a small badge
+                  numeral -- identical across all three lanes (same class,
+                  no per-lane branch), so none of them reads smaller. */}
               <div className="mb-8 flex flex-wrap items-start justify-between gap-6">
-                <div className="flex items-start gap-5">
-                  <span className="text-[3.25rem] font-extrabold leading-[0.85] tracking-[-0.02em] text-ink md:text-[4rem]">
+                <div className="flex items-start gap-6">
+                  <span className="text-[4.5rem] font-extrabold leading-[0.8] tracking-[-0.02em] text-ink md:text-[6rem]">
                     0{i + 1}
                   </span>
                   <div className="pt-1">

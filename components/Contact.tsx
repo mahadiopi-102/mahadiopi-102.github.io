@@ -124,11 +124,30 @@ export function Contact() {
         {/* Left: headline over the portrait, as in the reference. */}
         <div className="relative flex flex-col">
           <Reveal>
-            {/* Accent-coloured, unlike every other section heading on the
-                site. The reference does the same on its final CTA, and this
-                is the one section whose job is to be acted on. */}
-            <h2 className="max-w-[11ch] text-[clamp(2.8rem,6vw,4.8rem)] font-bold leading-[0.95] tracking-[-0.03em] text-amber">
-              Tell me what you publish.
+            {/* Availability pill borrowed from the 21st.dev "Let's work
+                together" reference Opi pointed at ("copy paste from
+                there") -- it reads as a trust signal right at the point of
+                the ask. Reusing Hero's exact badge markup/tokens rather
+                than inventing a second style, so it doesn't become a new
+                pattern of its own. */}
+            {SITE.availableForWork && (
+              <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-label uppercase text-ink-3">
+                <span className="relative flex size-1.5 shrink-0">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber opacity-75" />
+                  <span className="relative inline-flex size-1.5 rounded-full bg-amber" />
+                </span>
+                Available for work
+              </p>
+            )}
+            {/* Two-tone treatment, also from that reference: one line at
+                full contrast, the next stepped down -- there it's done with
+                a weight change (thin vs thin), but this site locked bold
+                everywhere, so the same contrast is carried by color instead
+                (amber vs a muted ink) rather than introducing a lighter
+                weight nowhere else on the page. */}
+            <h2 className="max-w-[11ch] text-[clamp(2.8rem,6vw,4.8rem)] font-bold leading-[0.95] tracking-[-0.03em]">
+              <span className="block text-amber">Tell me</span>
+              <span className="block text-ink-3">what you publish.</span>
             </h2>
             <p className="mt-5 max-w-[42ch] text-lead text-ink-2">
               You talk to me directly. No handoffs, no account managers.
