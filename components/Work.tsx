@@ -87,12 +87,27 @@ export function Work() {
         {LANES.map((lane, i) => (
           <div key={lane.key} className="sticky" style={{ top: `${80 + i * 16}px` }}>
             <Reveal className="rounded-2xl border border-line bg-surface p-7 shadow-panel md:p-10">
-              <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
-                <div>
-                  <h3 className="text-lead font-semibold text-ink">{lane.title}</h3>
-                  <p className="mt-1 max-w-[52ch] text-small text-ink-3">{lane.blurb}</p>
+              {/* Big number + "Format" + title on the left, the aspect-ratio
+                  badge as a pill on the right -- three lanes is a genuine,
+                  small sequence (not a generic per-section eyebrow), so the
+                  number earns its place here the way it wouldn't as
+                  decoration above every heading on the page. */}
+              <div className="mb-8 flex flex-wrap items-start justify-between gap-6">
+                <div className="flex items-start gap-5">
+                  <span className="text-[3.25rem] font-extrabold leading-[0.85] tracking-[-0.02em] text-ink md:text-[4rem]">
+                    0{i + 1}
+                  </span>
+                  <div className="pt-1">
+                    <p className="font-mono text-label uppercase tracking-wide text-ink-4">
+                      Format
+                    </p>
+                    <h3 className="mt-1 text-lead font-bold text-ink">{lane.title}</h3>
+                    <p className="mt-2 max-w-[52ch] text-small text-ink-3">{lane.blurb}</p>
+                  </div>
                 </div>
-                <span className="font-mono text-label uppercase text-ink-4">{lane.meta}</span>
+                <span className="shrink-0 rounded-full border border-line px-4 py-2 font-mono text-label uppercase tracking-wide text-ink-3">
+                  {lane.meta}
+                </span>
               </div>
               <div className="-mx-2 flex gap-4 overflow-x-auto px-2 pb-2">
                 {laneItems(lane.key).map((item) => (
