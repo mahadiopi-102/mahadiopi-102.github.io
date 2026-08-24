@@ -394,6 +394,29 @@
   );
 }
 
+/* Hero photo mask. Mobile just fades the bottom edge of a small contained
+   card. From md up the photo is a full-bleed background layer instead, so
+   the mask does the real work there: fade in from the left (where the
+   copy sits) and fade out at the bottom edge. Split into a real class
+   rather than an inline style specifically so it can carry this media
+   query -- a JS-computed style can't. */
+.hero-photo-mask {
+  mask-image: linear-gradient(to bottom, black 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 88%, transparent 100%);
+}
+@media (min-width: 768px) {
+  .hero-photo-mask {
+    mask-image:
+      linear-gradient(to right, transparent 0%, black 32%),
+      linear-gradient(to bottom, black 85%, transparent 100%);
+    mask-composite: intersect;
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 0%, black 32%),
+      linear-gradient(to bottom, black 85%, transparent 100%);
+    -webkit-mask-composite: source-in, source-in;
+  }
+}
+
 .hover-magnetic {
   transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
 }

@@ -2,36 +2,34 @@
 
 import Image from 'next/image';
 import { motion } from 'motion/react';
-import { lineWipe, stagger, revealLeft, revealRight, DUR, EASE_OUT } from '@/lib/motion';
+import { lineWipe, stagger, revealLeft, revealRight } from '@/lib/motion';
 import { SITE } from '@/content/site';
 import { LANES } from '@/content/work';
 import { Particles } from '@/components/Particles';
 
 /**
- * Layout follows the reference portfolio Opi shared: copy anchored to the
- * lower left, a large cutout portrait rising out of the bottom edge, and a
- * small info panel on the right carrying the availability badge and what he
- * actually does. Lane titles come from content/work.ts rather than being
- * retyped here, so the panel can't drift out of sync with the Work section.
+ * Follows the reference portfolio Opi shared. The one thing an earlier pass
+ * got wrong: that reference's warmth comes from the photograph itself — a
+ * real studio-lit backdrop occupying most of the hero, fading into the page
+ * only at its left edge. Cutting the subject out and floating him over a
+ * separately-painted CSS glow (the previous version) reads as a pasted
+ * sticker, not a photograph, no matter how well-tuned the glow is. This
+ * version uses the full, uncropped photo as a full-bleed background layer
+ * instead, exactly like the reference does.
  */
 export function Hero() {
   return (
     <section
       id="top"
-      className="relative mx-auto w-full max-w-[1160px] overflow-hidden px-6 pt-24 md:pt-16"
+      className="relative w-full overflow-hidden pt-24 md:pt-16"
     >
-      <span aria-hidden className="section-ambient" />
       <Particles className="z-0" />
 
-      {/* z-20 vs the portrait's z-10: both are children of the section, so
-          the portrait (later in DOM) would otherwise paint over this grid —
-          the panel's own z-20 can't fix that from inside this stacking
-          context. */}
-      <div className="relative z-20 grid min-h-[80dvh] grid-cols-1 items-end gap-10 md:grid-cols-[minmax(0,1fr)_260px] md:gap-8">
+      <div className="relative z-20 mx-auto grid w-full max-w-[1160px] grid-cols-1 items-end gap-10 px-6 md:min-h-[80dvh] md:grid-cols-[minmax(0,1fr)_260px] md:gap-8">
         <div className="max-w-[620px] pb-2 md:pb-24">
           {/* Deliberately below --text-hero's 6rem ceiling. That ceiling was
               set when the portrait was a 280px side element; at this size the
-              portrait takes the right ~40% of the section, and 6rem forces
+              portrait takes the right ~68% of the section, and 6rem forces
               "back in 48 hours." to break across lines mid-phrase. The
               reference gets away with 6rem because its headline is a single
               word. */}
@@ -103,61 +101,53 @@ export function Hero() {
           </motion.div>
         </div>
 
-        <div className="relative z-20 flex flex-col items-center gap-6 md:items-end md:self-center">
-          <motion.div
-            variants={revealRight}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.45 }}
-            /* Hairline outline over a light blur rather than a filled card:
-               in the reference the portrait reads straight through this
-               panel, and a solid fill is what made it sit on top like a
-               separate box. */
-            className="w-full max-w-[300px] rounded-2xl border border-line/70 bg-bg/40 p-5 backdrop-blur-xl md:max-w-[260px]"
-          >
-            {SITE.availableForWork && (
-              <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-label uppercase text-ink-3">
-                <span className="relative flex size-1.5 shrink-0">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber opacity-75" />
-                  <span className="relative inline-flex size-1.5 rounded-full bg-amber" />
-                </span>
-                Available for work
-              </p>
-            )}
-            <p className="text-right text-small font-medium text-ink">
-              Mahadi Hasan Opi
+        <motion.div
+          variants={revealRight}
+          initial="hidden"
+          animate="visible"
+          transition={{ delay: 0.45 }}
+          /* Hairline outline over a light blur rather than a filled card: it
+             reads through the photo behind it instead of sitting on top like
+             a separate box, matching the reference's translucent panel. */
+          className="w-full max-w-[300px] self-start rounded-2xl border border-line/70 bg-bg/40 p-5 backdrop-blur-xl md:max-w-[260px] md:self-center"
+        >
+          {SITE.availableForWork && (
+            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-label uppercase text-ink-3">
+              <span className="relative flex size-1.5 shrink-0">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber opacity-75" />
+                <span className="relative inline-flex size-1.5 rounded-full bg-amber" />
+              </span>
+              Available for work
             </p>
-            <ul className="mt-2 flex flex-col gap-0.5 text-right text-lead text-ink-2">
-              {LANES.map((lane) => (
-                <li key={lane.key}>{lane.title}</li>
-              ))}
-            </ul>
-          </motion.div>
-
-        </div>
+          )}
+          <p className="text-right text-small font-medium text-ink">
+            Mahadi Hasan Opi
+          </p>
+          <ul className="mt-2 flex flex-col gap-0.5 text-right text-lead text-ink-2">
+            {LANES.map((lane) => (
+              <li key={lane.key}>{lane.title}</li>
+            ))}
+          </ul>
+        </motion.div>
       </div>
 
-      {/* Sits after the grid so it falls below the copy in the mobile flow,
-          then goes absolute from md up: large, anchored to the section's
-          bottom edge, and clipped by the section's overflow so it bleeds
-          off rather than fading out. z-10 keeps it under the info panel,
-          which the reference lets the portrait pass behind. */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.98, x: 16 }}
-        animate={{ opacity: 1, scale: 1, x: 0 }}
-        transition={{ duration: DUR.slow, ease: EASE_OUT, delay: 0.2 }}
-        className="relative z-10 mx-auto mt-8 w-full max-w-[320px] md:absolute md:bottom-0 md:right-[5%] md:mx-0 md:mt-0 md:w-[42%] md:max-w-[480px]"
-      >
+      {/* Mobile: a normal contained card, after the text in DOM order so it
+          stacks below it in flow. From md up: pulled out of flow entirely
+          and pinned full-bleed to the right, matching the reference. The
+          mask (globals.css, .hero-photo-mask) does the equivalent split --
+          a JS-computed style can't carry a media query, so it has to be a
+          real class. */}
+      <div className="relative z-0 mx-auto mt-10 aspect-[3/4] w-full max-w-[320px] overflow-hidden rounded-2xl md:absolute md:inset-y-0 md:right-0 md:mx-0 md:mt-0 md:aspect-auto md:w-[68%] md:max-w-none md:overflow-visible md:rounded-none">
         <Image
-          src="/opi-cutout.webp"
+          src="/opi-hero-bg.webp"
           alt="Mahadi Hasan Opi"
-          width={760}
-          height={1052}
-          sizes="(min-width: 768px) 520px, 320px"
-          className="h-auto w-full"
+          fill
+          sizes="(min-width: 768px) 68vw, 100vw"
+          className="hero-photo-mask object-cover"
+          style={{ objectPosition: 'center 12%' }}
           priority
         />
-      </motion.div>
+      </div>
     </section>
   );
 }
