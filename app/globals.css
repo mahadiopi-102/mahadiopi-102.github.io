@@ -143,6 +143,12 @@
   --amber-glow-2: rgba(184, 121, 28, 0.08);
   --amber-glow-1-hover: rgba(184, 121, 28, 0.32);
   --amber-glow-2-hover: rgba(184, 121, 28, 0.14);
+  /* Section-scale ambient wash. Much wider and softer than the -glow-
+     values above, which are element-scale. Lighter in this theme: the
+     same alpha that reads as atmosphere over near-black turns muddy
+     over a light page. */
+  --ambient-1: rgba(184, 121, 28, 0.16);
+  --ambient-2: rgba(184, 121, 28, 0.06);
   /* Light glass base — was a copy-paste of dark's near-black base
      (rgba(8,13,24,0.9)), which made every glass-card render solid black
      in light mode. This needs to be light so the card reads as frosted
@@ -191,6 +197,8 @@
   --amber-glow-2: rgba(240, 160, 46, 0.08);
   --amber-glow-1-hover: rgba(240, 160, 46, 0.32);
   --amber-glow-2-hover: rgba(240, 160, 46, 0.14);
+  --ambient-1: rgba(240, 160, 46, 0.38);
+  --ambient-2: rgba(240, 160, 46, 0.12);
   --amber-glass-a: rgba(240, 160, 46, 0.12);
   --amber-glass-b: rgba(2, 5, 11, 0.9);
   --amber-glass-c: rgba(240, 160, 46, 0.05);
@@ -365,6 +373,25 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   animation: border-beam-spin 5s linear 2;
+}
+
+/* Section-scale ambient wash sitting behind the hero and contact content.
+   This is the thing that makes the reference layout read as cinematic
+   rather than flat: a large off-centre warm gradient the portrait sits
+   inside, not a tight halo around it. Kept in CSS off theme tokens so it
+   inverts correctly in light mode. Static, so nothing to gate on
+   prefers-reduced-motion. */
+.section-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    58% 62% at var(--ambient-x, 70%) var(--ambient-y, 42%),
+    var(--ambient-1) 0%,
+    var(--ambient-2) 42%,
+    transparent 72%
+  );
 }
 
 .hover-magnetic {

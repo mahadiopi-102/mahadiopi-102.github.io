@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, type FormEvent, type ReactNode } from 'react';
+import Image from 'next/image';
 import { motion } from 'motion/react';
-import { MailIcon, ArrowUpRightIcon } from 'lucide-react';
+import { MailIcon } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { DUR, EASE_OUT, revealLeft, revealRight, ONCE } from '@/lib/motion';
 import { SITE } from '@/content/site';
@@ -11,24 +12,19 @@ import { WhatsAppIcon, InstagramIcon } from '@/components/BrandIcons';
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 /**
- * A single reachable channel — email, WhatsApp, Instagram.
- *
- * Four hover/motion techniques below are adapted from a "book a call"
- * component the client sent as visual reference — the expanding icon
- * circle, the sliding arrow, the pulsing status dot, the split-text roll
- * on the heading, and the flanking lines that retreat on hover. None of
- * its content: that component hardcoded someone else's Cal.com link and
- * a placeholder email, neither of which belongs here.
+ * Compact channel pill. The reference CTA carries no contact cards at all —
+ * just the headline and the portrait — so the three full-width rows that
+ * used to sit here were what made this column feel cluttered next to it.
+ * These collapse to icon + label; the address itself still lives in the
+ * footer, so nothing verifiable is lost.
  */
-function ContactChannel({
+function ChannelPill({
   icon,
   label,
-  value,
   href,
 }: {
   icon: ReactNode;
   label: string;
-  value: string;
   href: string;
 }) {
   return (
@@ -36,25 +32,12 @@ function ContactChannel({
       href={href}
       target={href.startsWith('mailto:') ? undefined : '_blank'}
       rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-      className="group flex items-center gap-4 rounded-xl border border-line bg-bg-2 p-4 transition-colors duration-fast hover:border-amber/40"
+      className="group inline-flex items-center gap-2 rounded-full border border-line bg-bg-2/60 px-3.5 py-2 text-small text-ink-2 transition-colors duration-fast hover:border-amber/50 hover:text-ink active:scale-95"
     >
-      {/* Press feedback borrowed from threeui's Circle Buttons (MIT) --
-          just the :active scale, not its orbiting-aura idle spin, which
-          would reintroduce the always-on ambient loop this site's motion
-          review already removed elsewhere. */}
-      <span className="relative flex size-11 shrink-0 items-center justify-center transition-transform duration-fast group-active:scale-95">
-        <span className="absolute inset-0 rounded-full border border-line bg-transparent transition-all duration-base ease-out group-hover:scale-110 group-hover:border-amber group-hover:bg-amber" />
-        <span className="relative text-ink-2 transition-colors duration-base group-hover:text-bg">
-          {icon}
-        </span>
+      <span className="text-ink-3 transition-colors duration-fast group-hover:text-amber">
+        {icon}
       </span>
-
-      <span className="flex-1 min-w-0">
-        <span className="block text-small font-medium text-ink">{label}</span>
-        <span className="block truncate text-label text-ink-4">{value}</span>
-      </span>
-
-      <ArrowUpRightIcon className="size-4 shrink-0 text-ink-4 opacity-0 transition-all duration-fast group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-amber group-hover:opacity-100" />
+      {label}
     </a>
   );
 }
@@ -92,56 +75,114 @@ export function Contact() {
     }
   }
 
-  return (
-    <section id="contact" className="mx-auto w-full max-w-[1160px] border-t border-line px-6 py-24">
-      <Reveal>
-        <h2 className="group max-w-[24ch] text-section font-bold text-ink">
-          <span className="block overflow-hidden">
-            <span className="block transition-transform duration-700 ease-out group-hover:-translate-y-[8%]">
-              Tell me what you publish.
-            </span>
-          </span>
-        </h2>
-        <p className="mt-4 max-w-[52ch] text-lead text-ink-2">
-          You talk to me directly. No handoffs, no account managers.
-        </p>
-      </Reveal>
+  /* Shared field styling. Taller and rounder than the previous inputs, with
+     label sizing lifted toward heading scale — in the reference the field
+     labels read almost as large as body copy, which is what stops the card
+     feeling like a dense form. */
+  const field =
+    'w-full rounded-lg border border-line bg-bg-2/70 px-4 py-3 text-body text-ink outline-none transition-[border-color,box-shadow] duration-fast focus:border-amber focus:shadow-[0_0_16px_var(--amber-glow-2-hover)]';
+  const label = 'text-lead font-medium text-ink';
 
-      <div className="mt-14 grid gap-10 md:grid-cols-[1fr_1fr]">
+  return (
+    <section
+      id="contact"
+      className="relative mx-auto w-full max-w-[1160px] overflow-hidden border-t border-line px-6 pt-24 pb-24 md:pb-0"
+    >
+      {/* Ambient wash pushed to the left, behind the portrait. The reference
+          turns its whole CTA background blue here; this stays amber, since a
+          per-section colour flip is the one thing the project's theme lock
+          rules out. */}
+      <span
+        aria-hidden
+        className="section-ambient"
+        style={{ '--ambient-x': '22%', '--ambient-y': '68%' } as React.CSSProperties}
+      />
+
+      <div className="relative z-10 grid gap-12 md:grid-cols-[1fr_1fr] md:items-center md:gap-10">
+        {/* Left: headline over the portrait, as in the reference. */}
+        <div className="relative flex flex-col">
+          <Reveal>
+            {/* Accent-coloured, unlike every other section heading on the
+                site. The reference does the same on its final CTA, and this
+                is the one section whose job is to be acted on. */}
+            <h2 className="max-w-[11ch] text-[clamp(2.8rem,6vw,4.8rem)] font-bold leading-[0.95] tracking-[-0.03em] text-amber">
+              Tell me what you publish.
+            </h2>
+            <p className="mt-5 max-w-[42ch] text-lead text-ink-2">
+              You talk to me directly. No handoffs, no account managers.
+            </p>
+          </Reveal>
+
+          <motion.div
+            variants={revealLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={ONCE}
+            className="mt-7 flex flex-wrap items-center gap-2.5"
+          >
+            <ChannelPill
+              icon={<MailIcon className="size-4" strokeWidth={1.5} />}
+              label="Email"
+              href={`mailto:${SITE.email}`}
+            />
+            <ChannelPill
+              icon={<WhatsAppIcon className="size-4" />}
+              label="WhatsApp"
+              href={SITE.whatsapp}
+            />
+            <ChannelPill
+              icon={<InstagramIcon className="size-4" />}
+              label="Instagram"
+              href={SITE.instagram}
+            />
+          </motion.div>
+
+          {/* Bleeds off the section's bottom edge, headline sitting above it
+              in the stack — the reference's arrangement. */}
+          <div className="relative -z-10 mt-10 hidden w-full max-w-[420px] md:-mt-4 md:block">
+            {/* The source frame cropped his arm flat against the photo's
+                right edge, so the cutout inherits a hard vertical cut that
+                reads as a box against the ambient wash. Fading that edge
+                dissolves it; the hero cutout doesn't need this because its
+                subject sits clear of the frame sides. */}
+            <Image
+              src="/opi-cutout-2.webp"
+              alt=""
+              width={720}
+              height={937}
+              sizes="420px"
+              className="h-auto w-full"
+              style={{
+                maskImage: 'linear-gradient(to right, black 72%, transparent 99%)',
+                WebkitMaskImage:
+                  'linear-gradient(to right, black 72%, transparent 99%)',
+              }}
+            />
+          </div>
+        </div>
+
         <motion.form
-          variants={revealLeft}
+          variants={revealRight}
           initial="hidden"
           whileInView="visible"
           viewport={ONCE}
           onSubmit={handleSubmit}
-          className="flex flex-col gap-5"
+          className="flex h-fit flex-col gap-5 rounded-2xl border border-line bg-surface/70 p-6 shadow-panel backdrop-blur-xl md:p-8"
         >
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="name" className="text-small font-medium text-ink-2">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="name" className={label}>
               Name
             </label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              required
-              className="rounded-md border border-line bg-bg-2 px-3.5 py-2.5 text-body text-ink outline-none transition-[border-color,box-shadow] duration-fast focus:border-amber focus:shadow-[0_0_12px_var(--amber-glow-2)]"
-            />
+            <input id="name" name="name" type="text" required className={field} />
           </div>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="email" className="text-small font-medium text-ink-2">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="email" className={label}>
               Email
             </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className="rounded-md border border-line bg-bg-2 px-3.5 py-2.5 text-body text-ink outline-none transition-[border-color,box-shadow] duration-fast focus:border-amber focus:shadow-[0_0_12px_var(--amber-glow-2)]"
-            />
+            <input id="email" name="email" type="email" required className={field} />
           </div>
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="message" className="text-small font-medium text-ink-2">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="message" className={label}>
               What do you publish, and how often?
             </label>
             <textarea
@@ -149,22 +190,18 @@ export function Contact() {
               name="message"
               rows={4}
               required
-              className="resize-none rounded-md border border-line bg-bg-2 px-3.5 py-2.5 text-body text-ink outline-none transition-[border-color,box-shadow] duration-fast focus:border-amber focus:shadow-[0_0_12px_var(--amber-glow-2)]"
+              className={`${field} resize-none`}
             />
           </div>
 
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="glow-breathe mt-2 rounded-md bg-amber px-6 py-3 text-small font-medium text-bg transition-transform duration-fast hover:-translate-y-px active:translate-y-0 active:scale-[0.98] disabled:opacity-60"
+            className="mt-1 w-fit rounded-lg bg-amber px-7 py-3 text-small font-medium text-bg transition-transform duration-fast hover:-translate-y-px active:translate-y-0 active:scale-[0.98] disabled:opacity-60"
           >
             {status === 'submitting' ? 'Sending…' : 'Send message'}
           </button>
 
-          {/* The one moment on the page where a visitor takes a real action
-              and waits on a result — it used to just teleport in. Global
-              MotionConfig reducedMotion="user" drops the y-travel and keeps
-              the fade for anyone who asked for less motion. */}
           {status === 'success' && (
             <motion.p
               role="status"
@@ -192,54 +229,6 @@ export function Contact() {
             </motion.p>
           )}
         </motion.form>
-
-        <motion.div
-          variants={revealRight}
-          initial="hidden"
-          whileInView="visible"
-          viewport={ONCE}
-          className="glow-breathe flex flex-col justify-center gap-4 rounded-2xl border border-amber/30 bg-surface p-8"
-        >
-          <div className="group flex items-center gap-3">
-            <span className="relative flex size-2 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber opacity-75" />
-              <span className="relative inline-flex size-2 rounded-full bg-amber" />
-            </span>
-            <span
-              aria-hidden
-              className="h-px w-4 shrink-0 bg-line transition-all duration-500 ease-out group-hover:w-0 group-hover:opacity-0"
-            />
-            <p className="whitespace-nowrap font-mono text-label uppercase text-ink-4">Reach me directly</p>
-            <span
-              aria-hidden
-              className="h-px flex-1 bg-line transition-all duration-500 ease-out group-hover:scale-x-0"
-              style={{ transformOrigin: 'right' }}
-            />
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <ContactChannel
-              icon={<MailIcon className="size-5" strokeWidth={1.5} />}
-              label="Email"
-              value={SITE.email}
-              href={`mailto:${SITE.email}`}
-            />
-            <ContactChannel
-              icon={<WhatsAppIcon className="size-5" />}
-              label="WhatsApp"
-              value="Message me directly"
-              href={SITE.whatsapp}
-            />
-            <ContactChannel
-              icon={<InstagramIcon className="size-5" />}
-              label="Instagram"
-              value={SITE.instagramHandle}
-              href={SITE.instagram}
-            />
-          </div>
-
-          <p className="mt-1 text-small text-ink-4">Fastest reply is the form.</p>
-        </motion.div>
       </div>
     </section>
   );
