@@ -25,7 +25,12 @@ export function Hero() {
     >
       <Particles className="z-0" />
 
-      <div className="relative z-20 mx-auto grid w-full max-w-[1160px] grid-cols-1 items-end gap-10 px-6 md:min-h-[80dvh] md:grid-cols-[minmax(0,1fr)_260px] md:gap-8">
+      {/* items-end + a tall min-h reads fine on a short viewport but on a
+          tall one it bottom-jams every column and leaves the whole upper
+          section empty -- switching to items-center at md and dropping the
+          min-h from 80dvh distributes the slack instead of dumping all of
+          it above the headline. */}
+      <div className="relative z-20 mx-auto grid w-full max-w-[1160px] grid-cols-1 items-end gap-10 px-6 md:min-h-[62dvh] md:grid-cols-[minmax(0,1fr)_260px] md:items-center md:gap-8">
         <div className="max-w-[620px] pb-2 md:pb-24">
           {/* Deliberately below --text-hero's 6rem ceiling. That ceiling was
               set when the portrait was a 280px side element; at this size the
@@ -108,8 +113,11 @@ export function Hero() {
           transition={{ delay: 0.45 }}
           /* Hairline outline over a light blur rather than a filled card: it
              reads through the photo behind it instead of sitting on top like
-             a separate box, matching the reference's translucent panel. */
-          className="w-full max-w-[300px] self-start rounded-2xl border border-line/70 bg-bg/40 p-5 backdrop-blur-xl md:max-w-[260px] md:self-center"
+             a separate box, matching the reference's translucent panel.
+             self-end (not self-center) so it bottom-aligns with the text
+             column instead of landing at the row's vertical middle --
+             centered put it squarely over his face at this photo's framing. */
+          className="w-full max-w-[300px] self-start rounded-2xl border border-line/70 bg-bg/40 p-5 backdrop-blur-xl md:max-w-[260px] md:self-end"
         >
           {SITE.availableForWork && (
             <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-label uppercase text-ink-3">
