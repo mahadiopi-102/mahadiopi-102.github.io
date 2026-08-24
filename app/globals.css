@@ -405,13 +405,26 @@
   -webkit-mask-image: linear-gradient(to bottom, black 88%, transparent 100%);
 }
 @media (min-width: 768px) {
+  /* The left-edge fade was reaching full opacity by 32% width, which read
+     as a hard cut with flat black to its left rather than a gradient --
+     Opi's own description. Spread across a wider, multi-stop range instead
+     so the transition is visibly gradual over most of the photo's left
+     half, not resolved in the first third. */
   .hero-photo-mask {
     mask-image:
-      linear-gradient(to right, transparent 0%, black 32%),
+      linear-gradient(
+        to right,
+        transparent 0%,
+        black 65%
+      ),
       linear-gradient(to bottom, black 85%, transparent 100%);
     mask-composite: intersect;
     -webkit-mask-image:
-      linear-gradient(to right, transparent 0%, black 32%),
+      linear-gradient(
+        to right,
+        transparent 0%,
+        black 65%
+      ),
       linear-gradient(to bottom, black 85%, transparent 100%);
     -webkit-mask-composite: source-in, source-in;
   }

@@ -5,40 +5,62 @@ import Image from 'next/image';
 import { motion } from 'motion/react';
 import { MailIcon } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
-import { DUR, EASE_OUT, revealLeft, revealRight, ONCE } from '@/lib/motion';
+import { DUR, EASE_OUT, revealRight, ONCE } from '@/lib/motion';
 import { SITE } from '@/content/site';
 import { WhatsAppIcon, InstagramIcon } from '@/components/BrandIcons';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 /**
- * Compact channel pill. The reference CTA carries no contact cards at all —
- * just the headline and the portrait — so the three full-width rows that
- * used to sit here were what made this column feel cluttered next to it.
- * These collapse to icon + label; the address itself still lives in the
- * footer, so nothing verifiable is lost.
+ * Icon-only channel button, floating in the empty space beside his head
+ * rather than sitting in a labeled row above the photo — on Opi's request,
+ * so the three ways to reach him read as attached to his portrait instead
+ * of as a generic contact-card list. `label` still does the accessibility
+ * work via aria-label even with no visible text.
+ *
+ * The bounce is a real, if unusual, motion call: an infinite loop is
+ * exactly what this project's earlier animation review flagged and removed
+ * elsewhere (glow-breathe, border-beam) for costing paint on every visit
+ * with no payoff. The difference here is it's requested, purposeful
+ * (signalling "these are clickable, and this is where to reach me" on a
+ * one-time CTA section, not ambient decoration), and rests for 2.2s between
+ * cycles rather than running continuously — closer to a rare/occasional
+ * delight moment than an always-on loop. Framer's global
+ * reducedMotion="user" (set in layout.tsx) strips the transform for anyone
+ * who's asked for less motion, same as everywhere else on the site.
  */
-function ChannelPill({
+function OrbitIcon({
   icon,
   label,
   href,
+  index,
+  style,
 }: {
   icon: ReactNode;
   label: string;
   href: string;
+  index: number;
+  style: React.CSSProperties;
 }) {
   return (
-    <a
+    <motion.a
       href={href}
       target={href.startsWith('mailto:') ? undefined : '_blank'}
       rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-      className="group inline-flex items-center gap-2 rounded-full border border-line bg-bg-2/60 px-3.5 py-2 text-small text-ink-2 transition-colors duration-fast hover:border-amber/50 hover:text-ink active:scale-95"
+      aria-label={label}
+      className="absolute flex size-11 items-center justify-center rounded-full border border-line bg-bg/75 text-ink-2 backdrop-blur-md transition-colors duration-fast hover:border-amber/60 hover:text-amber active:scale-95"
+      style={style}
+      animate={{ y: [0, -9, 0] }}
+      transition={{
+        duration: 0.7,
+        repeat: Infinity,
+        repeatDelay: 2.2,
+        delay: index * 0.18,
+        ease: 'easeInOut',
+      }}
     >
-      <span className="text-ink-3 transition-colors duration-fast group-hover:text-amber">
-        {icon}
-      </span>
-      {label}
-    </a>
+      {icon}
+    </motion.a>
   );
 }
 
@@ -113,32 +135,44 @@ export function Contact() {
             </p>
           </Reveal>
 
-          <motion.div
-            variants={revealLeft}
-            initial="hidden"
-            whileInView="visible"
-            viewport={ONCE}
-            className="mt-7 flex flex-wrap items-center gap-2.5"
-          >
-            <ChannelPill
-              icon={<MailIcon className="size-4" strokeWidth={1.5} />}
-              label="Email"
+          {/* Mobile-only fallback: the icons below live inside the
+              hidden-on-mobile photo (absolutely positioned against it,
+              which doesn't exist below md), so without this row WhatsApp
+              and Instagram would have no path to reach on a phone at all --
+              only email, via the footer. No bounce here; the animated
+              version is the one actually beside his photo. */}
+          <div className="mt-6 flex items-center gap-3 md:hidden">
+            <a
               href={`mailto:${SITE.email}`}
-            />
-            <ChannelPill
-              icon={<WhatsAppIcon className="size-4" />}
-              label="WhatsApp"
+              aria-label="Email me"
+              className="flex size-11 items-center justify-center rounded-full border border-line bg-bg-2/60 text-ink-2 transition-colors duration-fast active:scale-95"
+            >
+              <MailIcon className="size-4" strokeWidth={1.5} />
+            </a>
+            <a
               href={SITE.whatsapp}
-            />
-            <ChannelPill
-              icon={<InstagramIcon className="size-4" />}
-              label="Instagram"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Message me on WhatsApp"
+              className="flex size-11 items-center justify-center rounded-full border border-line bg-bg-2/60 text-ink-2 transition-colors duration-fast active:scale-95"
+            >
+              <WhatsAppIcon className="size-4" />
+            </a>
+            <a
               href={SITE.instagram}
-            />
-          </motion.div>
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow on Instagram"
+              className="flex size-11 items-center justify-center rounded-full border border-line bg-bg-2/60 text-ink-2 transition-colors duration-fast active:scale-95"
+            >
+              <InstagramIcon className="size-4" />
+            </a>
+          </div>
 
           {/* Bleeds off the section's bottom edge, headline sitting above it
-              in the stack — the reference's arrangement. */}
+              in the stack — the reference's arrangement. Icon buttons float
+              in the empty space beside his head rather than sitting in a
+              row above the photo, per Opi's request. */}
           <div className="relative -z-10 mt-10 hidden w-full max-w-[420px] md:-mt-4 md:block">
             {/* The source frame cropped his arm flat against the photo's
                 right edge, so the cutout inherits a hard vertical cut that
@@ -157,6 +191,27 @@ export function Contact() {
                 WebkitMaskImage:
                   'linear-gradient(to right, black 72%, transparent 99%)',
               }}
+            />
+            <OrbitIcon
+              index={0}
+              icon={<MailIcon className="size-4" strokeWidth={1.5} />}
+              label="Email me"
+              href={`mailto:${SITE.email}`}
+              style={{ left: '57%', top: '4%' }}
+            />
+            <OrbitIcon
+              index={1}
+              icon={<WhatsAppIcon className="size-4" />}
+              label="Message me on WhatsApp"
+              href={SITE.whatsapp}
+              style={{ left: '74%', top: '20%' }}
+            />
+            <OrbitIcon
+              index={2}
+              icon={<InstagramIcon className="size-4" />}
+              label="Follow on Instagram"
+              href={SITE.instagram}
+              style={{ left: '80%', top: '38%' }}
             />
           </div>
         </div>

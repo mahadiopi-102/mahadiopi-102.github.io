@@ -116,8 +116,11 @@ export function Hero() {
              a separate box, matching the reference's translucent panel.
              self-end (not self-center) so it bottom-aligns with the text
              column instead of landing at the row's vertical middle --
-             centered put it squarely over his face at this photo's framing. */
-          className="w-full max-w-[300px] self-start rounded-2xl border border-line/70 bg-bg/40 p-5 backdrop-blur-xl md:max-w-[260px] md:self-end"
+             centered put it squarely over his face at this photo's framing.
+             md:mb-6 lifts it slightly off that baseline per Opi's request --
+             mb-14 was tried first and overshot into his mouth/chin, so this
+             is deliberately a smaller nudge, not a return to self-center. */
+          className="w-full max-w-[300px] self-start rounded-2xl border border-line/70 bg-bg/40 p-5 backdrop-blur-xl md:max-w-[260px] md:mb-6 md:self-end"
         >
           {SITE.availableForWork && (
             <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-label uppercase text-ink-3">
@@ -145,14 +148,21 @@ export function Hero() {
           mask (globals.css, .hero-photo-mask) does the equivalent split --
           a JS-computed style can't carry a media query, so it has to be a
           real class. */}
-      <div className="relative z-0 mx-auto mt-10 aspect-[3/4] w-full max-w-[320px] overflow-hidden rounded-2xl md:absolute md:inset-y-0 md:right-0 md:mx-0 md:mt-0 md:aspect-auto md:w-[68%] md:max-w-none md:overflow-visible md:rounded-none">
+      {/* md:max-w-[820px] caps the container so it stops growing past a
+          point on very wide viewports. Without it, w-[68%] alone kept
+          scaling the photo up with viewport width while the panel next to
+          it stayed a fixed 260px -- on a wide-but-short window his face grew
+          large enough to reach the panel again even after the collar fix,
+          since the crop's own scale (object-cover against a fixed-pixel
+          source) grows with container width. */}
+      <div className="relative z-0 mx-auto mt-10 aspect-[3/4] w-full max-w-[320px] overflow-hidden rounded-2xl md:absolute md:inset-y-0 md:right-0 md:mx-0 md:mt-0 md:aspect-auto md:w-[68%] md:max-w-[820px] md:overflow-visible md:rounded-none">
         <Image
           src="/opi-hero-bg.webp"
           alt="Mahadi Hasan Opi"
           fill
           sizes="(min-width: 768px) 68vw, 100vw"
           className="hero-photo-mask object-cover"
-          style={{ objectPosition: 'center 12%' }}
+          style={{ objectPosition: 'center 20%' }}
           priority
         />
       </div>
