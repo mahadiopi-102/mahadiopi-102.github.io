@@ -11,12 +11,12 @@ import { WhatsAppIcon, InstagramIcon } from '@/components/BrandIcons';
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 /**
- * Built off the 21st.dev "Let's work together" reference Opi picked --
- * centered, minimal, one clear thing to do. That reference has a single
- * circular arrow button; this needed three equally-weighted ones (email,
- * WhatsApp, Instagram) rather than one favoured channel with the other two
- * hidden, per Opi's explicit follow-up. Each is a labelled pill, not an
- * icon-only circle someone has to guess at or hover to identify.
+ * Literal port of the reference's circular arrow button, repeated three
+ * times instead of once. The reference has exactly one (a generic "get in
+ * touch" arrow); Opi asked specifically that WhatsApp and Instagram read as
+ * equally easy to find as email, not a favoured channel with the other two
+ * needing a hover or a hunt -- so each circle carries its own icon and a
+ * small caption underneath, identifiable without interaction.
  */
 function ChannelButton({
   icon,
@@ -32,12 +32,14 @@ function ChannelButton({
       href={href}
       target={href.startsWith('mailto:') ? undefined : '_blank'}
       rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-      className="group flex items-center gap-2.5 rounded-full border border-line bg-surface/70 py-3 pl-4 pr-5 text-small font-medium text-ink backdrop-blur-md transition-colors duration-fast hover:border-amber/60 hover:text-amber active:scale-[0.98]"
+      className="group flex flex-col items-center gap-3"
     >
-      <span className="text-ink-3 transition-colors duration-fast group-hover:text-amber">
+      <span className="flex size-16 items-center justify-center rounded-full border border-line text-ink-2 transition-colors duration-fast group-hover:border-amber/60 group-hover:text-amber">
         {icon}
       </span>
-      {label}
+      <span className="font-mono text-label uppercase tracking-wide text-ink-4 transition-colors duration-fast group-hover:text-ink-2">
+        {label}
+      </span>
     </a>
   );
 }
@@ -98,12 +100,13 @@ export function Contact() {
         style={{ '--ambient-x': '22%', '--ambient-y': '68%' } as React.CSSProperties}
       />
 
-      {/* Centered, single column -- the "Let's work together" reference's
-          structure, picked over the split form-card layout. */}
-      <div className="relative z-10 mx-auto flex max-w-[640px] flex-col items-center text-center">
+      {/* Centered, single column, generous vertical space -- the reference
+          reads as spacious rather than dense, which the old two-column
+          form-card layout wasn't. */}
+      <div className="relative z-10 mx-auto flex max-w-[820px] flex-col items-center py-8 text-center">
         <Reveal>
           {SITE.availableForWork && (
-            <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-label uppercase text-ink-3">
+            <p className="mb-8 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-label uppercase text-ink-3">
               <span className="relative flex size-1.5 shrink-0">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber opacity-75" />
                 <span className="relative inline-flex size-1.5 rounded-full bg-amber" />
@@ -111,17 +114,24 @@ export function Contact() {
               Available for work
             </p>
           )}
-          {/* Two-tone treatment from the reference: one line at full
-              contrast, the next stepped down -- there it's a weight change
-              (thin vs thin), but this site locks bold everywhere, so the
-              contrast is carried by color instead. */}
-          <h2 className="text-[clamp(2.8rem,6vw,4.8rem)] font-bold leading-[0.95] tracking-[-0.03em]">
-            <span className="block text-amber">Tell me</span>
-            <span className="block text-ink-3">what you publish.</span>
+          {/* Literal port of the reference's weight treatment: light, not
+              bold. A deliberate, isolated exception to the site's bold-lock
+              -- Opi pointed at this exact image twice, so the thin display
+              weight is the point here, not a generic heading. */}
+          <h2 className="text-[clamp(2.6rem,5.8vw,4.5rem)] font-light leading-[1.05] tracking-[-0.02em]">
+            <span className="block text-ink">Tell me</span>
+            <span className="relative flex items-center justify-center gap-5 text-ink-4 sm:whitespace-nowrap">
+              <span
+                aria-hidden
+                className="hidden h-px w-10 shrink-0 bg-line sm:block md:w-16"
+              />
+              what you publish.
+              <span
+                aria-hidden
+                className="hidden h-px w-10 shrink-0 bg-line sm:block md:w-16"
+              />
+            </span>
           </h2>
-          <p className="mx-auto mt-5 max-w-[42ch] text-lead text-ink-2">
-            You talk to me directly. No handoffs, no account managers.
-          </p>
         </Reveal>
 
         {/* Three equally-weighted channels rather than the reference's one
@@ -133,30 +143,36 @@ export function Contact() {
           initial="hidden"
           whileInView="visible"
           viewport={ONCE}
-          className="mt-8 flex flex-wrap items-center justify-center gap-3"
+          className="mt-10 flex items-center justify-center gap-8"
         >
           <motion.div variants={reveal}>
             <ChannelButton
-              icon={<MailIcon className="size-4" strokeWidth={1.5} />}
+              icon={<MailIcon className="size-5" strokeWidth={1.5} />}
               label="Email"
               href={`mailto:${SITE.email}`}
             />
           </motion.div>
           <motion.div variants={reveal}>
             <ChannelButton
-              icon={<WhatsAppIcon className="size-4" />}
+              icon={<WhatsAppIcon className="size-5" />}
               label="WhatsApp"
               href={SITE.whatsapp}
             />
           </motion.div>
           <motion.div variants={reveal}>
             <ChannelButton
-              icon={<InstagramIcon className="size-4" />}
+              icon={<InstagramIcon className="size-5" />}
               label="Instagram"
               href={SITE.instagram}
             />
           </motion.div>
         </motion.div>
+
+        <Reveal className="mt-10 max-w-[42ch]">
+          <p className="text-lead text-ink-2">
+            You talk to me directly. No handoffs, no account managers.
+          </p>
+        </Reveal>
 
         <div className="my-10 flex w-full items-center gap-4 text-label text-ink-4">
           <span className="h-px flex-1 bg-line" />
