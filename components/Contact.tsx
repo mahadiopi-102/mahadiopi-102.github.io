@@ -1,66 +1,44 @@
 'use client';
 
 import { useState, type FormEvent, type ReactNode } from 'react';
-import Image from 'next/image';
 import { motion } from 'motion/react';
 import { MailIcon } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
-import { DUR, EASE_OUT, revealRight, ONCE } from '@/lib/motion';
+import { DUR, EASE_OUT, stagger, reveal, ONCE } from '@/lib/motion';
 import { SITE } from '@/content/site';
 import { WhatsAppIcon, InstagramIcon } from '@/components/BrandIcons';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 /**
- * Icon-only channel button, floating in the empty space beside his head
- * rather than sitting in a labeled row above the photo — on Opi's request,
- * so the three ways to reach him read as attached to his portrait instead
- * of as a generic contact-card list. `label` still does the accessibility
- * work via aria-label even with no visible text.
- *
- * The bounce is a real, if unusual, motion call: an infinite loop is
- * exactly what this project's earlier animation review flagged and removed
- * elsewhere (glow-breathe, border-beam) for costing paint on every visit
- * with no payoff. The difference here is it's requested, purposeful
- * (signalling "these are clickable, and this is where to reach me" on a
- * one-time CTA section, not ambient decoration), and rests for 2.2s between
- * cycles rather than running continuously — closer to a rare/occasional
- * delight moment than an always-on loop. Framer's global
- * reducedMotion="user" (set in layout.tsx) strips the transform for anyone
- * who's asked for less motion, same as everywhere else on the site.
+ * Built off the 21st.dev "Let's work together" reference Opi picked --
+ * centered, minimal, one clear thing to do. That reference has a single
+ * circular arrow button; this needed three equally-weighted ones (email,
+ * WhatsApp, Instagram) rather than one favoured channel with the other two
+ * hidden, per Opi's explicit follow-up. Each is a labelled pill, not an
+ * icon-only circle someone has to guess at or hover to identify.
  */
-function OrbitIcon({
+function ChannelButton({
   icon,
   label,
   href,
-  index,
-  style,
 }: {
   icon: ReactNode;
   label: string;
   href: string;
-  index: number;
-  style: React.CSSProperties;
 }) {
   return (
-    <motion.a
+    <a
       href={href}
       target={href.startsWith('mailto:') ? undefined : '_blank'}
       rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-      aria-label={label}
-      className="absolute flex size-11 items-center justify-center rounded-full border border-line bg-bg/75 text-ink-2 backdrop-blur-md transition-colors duration-fast hover:border-amber/60 hover:text-amber active:scale-95"
-      style={style}
-      animate={{ y: [0, -9, 0] }}
-      transition={{
-        duration: 0.7,
-        repeat: Infinity,
-        repeatDelay: 2.2,
-        delay: index * 0.18,
-        ease: 'easeInOut',
-      }}
+      className="group flex items-center gap-2.5 rounded-full border border-line bg-surface/70 py-3 pl-4 pr-5 text-small font-medium text-ink backdrop-blur-md transition-colors duration-fast hover:border-amber/60 hover:text-amber active:scale-[0.98]"
     >
-      {icon}
-    </motion.a>
+      <span className="text-ink-3 transition-colors duration-fast group-hover:text-amber">
+        {icon}
+      </span>
+      {label}
+    </a>
   );
 }
 
@@ -120,128 +98,81 @@ export function Contact() {
         style={{ '--ambient-x': '22%', '--ambient-y': '68%' } as React.CSSProperties}
       />
 
-      <div className="relative z-10 grid gap-12 md:grid-cols-[1fr_1fr] md:items-center md:gap-10">
-        {/* Left: headline over the portrait, as in the reference. */}
-        <div className="relative flex flex-col">
-          <Reveal>
-            {/* Availability pill borrowed from the 21st.dev "Let's work
-                together" reference Opi pointed at ("copy paste from
-                there") -- it reads as a trust signal right at the point of
-                the ask. Reusing Hero's exact badge markup/tokens rather
-                than inventing a second style, so it doesn't become a new
-                pattern of its own. */}
-            {SITE.availableForWork && (
-              <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-label uppercase text-ink-3">
-                <span className="relative flex size-1.5 shrink-0">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber opacity-75" />
-                  <span className="relative inline-flex size-1.5 rounded-full bg-amber" />
-                </span>
-                Available for work
-              </p>
-            )}
-            {/* Two-tone treatment, also from that reference: one line at
-                full contrast, the next stepped down -- there it's done with
-                a weight change (thin vs thin), but this site locked bold
-                everywhere, so the same contrast is carried by color instead
-                (amber vs a muted ink) rather than introducing a lighter
-                weight nowhere else on the page. */}
-            <h2 className="max-w-[11ch] text-[clamp(2.8rem,6vw,4.8rem)] font-bold leading-[0.95] tracking-[-0.03em]">
-              <span className="block text-amber">Tell me</span>
-              <span className="block text-ink-3">what you publish.</span>
-            </h2>
-            <p className="mt-5 max-w-[42ch] text-lead text-ink-2">
-              You talk to me directly. No handoffs, no account managers.
+      {/* Centered, single column -- the "Let's work together" reference's
+          structure, picked over the split form-card layout. */}
+      <div className="relative z-10 mx-auto flex max-w-[640px] flex-col items-center text-center">
+        <Reveal>
+          {SITE.availableForWork && (
+            <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-label uppercase text-ink-3">
+              <span className="relative flex size-1.5 shrink-0">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber opacity-75" />
+                <span className="relative inline-flex size-1.5 rounded-full bg-amber" />
+              </span>
+              Available for work
             </p>
-          </Reveal>
+          )}
+          {/* Two-tone treatment from the reference: one line at full
+              contrast, the next stepped down -- there it's a weight change
+              (thin vs thin), but this site locks bold everywhere, so the
+              contrast is carried by color instead. */}
+          <h2 className="text-[clamp(2.8rem,6vw,4.8rem)] font-bold leading-[0.95] tracking-[-0.03em]">
+            <span className="block text-amber">Tell me</span>
+            <span className="block text-ink-3">what you publish.</span>
+          </h2>
+          <p className="mx-auto mt-5 max-w-[42ch] text-lead text-ink-2">
+            You talk to me directly. No handoffs, no account managers.
+          </p>
+        </Reveal>
 
-          {/* Mobile-only fallback: the icons below live inside the
-              hidden-on-mobile photo (absolutely positioned against it,
-              which doesn't exist below md), so without this row WhatsApp
-              and Instagram would have no path to reach on a phone at all --
-              only email, via the footer. No bounce here; the animated
-              version is the one actually beside his photo. */}
-          <div className="mt-6 flex items-center gap-3 md:hidden">
-            <a
-              href={`mailto:${SITE.email}`}
-              aria-label="Email me"
-              className="flex size-11 items-center justify-center rounded-full border border-line bg-bg-2/60 text-ink-2 transition-colors duration-fast active:scale-95"
-            >
-              <MailIcon className="size-4" strokeWidth={1.5} />
-            </a>
-            <a
-              href={SITE.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Message me on WhatsApp"
-              className="flex size-11 items-center justify-center rounded-full border border-line bg-bg-2/60 text-ink-2 transition-colors duration-fast active:scale-95"
-            >
-              <WhatsAppIcon className="size-4" />
-            </a>
-            <a
-              href={SITE.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Follow on Instagram"
-              className="flex size-11 items-center justify-center rounded-full border border-line bg-bg-2/60 text-ink-2 transition-colors duration-fast active:scale-95"
-            >
-              <InstagramIcon className="size-4" />
-            </a>
-          </div>
-
-          {/* Bleeds off the section's bottom edge, headline sitting above it
-              in the stack — the reference's arrangement. Icon buttons float
-              in the empty space beside his head rather than sitting in a
-              row above the photo, per Opi's request. */}
-          <div className="relative -z-10 mt-10 hidden w-full max-w-[420px] md:-mt-4 md:block">
-            {/* The source frame cropped his arm flat against the photo's
-                right edge, so the cutout inherits a hard vertical cut that
-                reads as a box against the ambient wash. Fading that edge
-                dissolves it; the hero cutout doesn't need this because its
-                subject sits clear of the frame sides. */}
-            <Image
-              src="/opi-cutout-2.webp"
-              alt=""
-              width={720}
-              height={937}
-              sizes="420px"
-              className="h-auto w-full"
-              style={{
-                maskImage: 'linear-gradient(to right, black 72%, transparent 99%)',
-                WebkitMaskImage:
-                  'linear-gradient(to right, black 72%, transparent 99%)',
-              }}
-            />
-            <OrbitIcon
-              index={0}
+        {/* Three equally-weighted channels rather than the reference's one
+            arrow button -- Opi asked specifically that WhatsApp and
+            Instagram be just as easy to find as email, not a favoured
+            channel with the others requiring a hover or a hunt. */}
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={ONCE}
+          className="mt-8 flex flex-wrap items-center justify-center gap-3"
+        >
+          <motion.div variants={reveal}>
+            <ChannelButton
               icon={<MailIcon className="size-4" strokeWidth={1.5} />}
-              label="Email me"
+              label="Email"
               href={`mailto:${SITE.email}`}
-              style={{ left: '57%', top: '4%' }}
             />
-            <OrbitIcon
-              index={1}
+          </motion.div>
+          <motion.div variants={reveal}>
+            <ChannelButton
               icon={<WhatsAppIcon className="size-4" />}
-              label="Message me on WhatsApp"
+              label="WhatsApp"
               href={SITE.whatsapp}
-              style={{ left: '74%', top: '20%' }}
             />
-            <OrbitIcon
-              index={2}
+          </motion.div>
+          <motion.div variants={reveal}>
+            <ChannelButton
               icon={<InstagramIcon className="size-4" />}
-              label="Follow on Instagram"
+              label="Instagram"
               href={SITE.instagram}
-              style={{ left: '80%', top: '38%' }}
             />
-          </div>
+          </motion.div>
+        </motion.div>
+
+        <div className="my-10 flex w-full items-center gap-4 text-label text-ink-4">
+          <span className="h-px flex-1 bg-line" />
+          <span className="font-mono uppercase tracking-wide">
+            Or send the details
+          </span>
+          <span className="h-px flex-1 bg-line" />
         </div>
 
         <motion.form
-          variants={revealRight}
+          variants={reveal}
           initial="hidden"
           whileInView="visible"
           viewport={ONCE}
           onSubmit={handleSubmit}
-          className="flex h-fit flex-col gap-5 rounded-2xl border border-line bg-surface/70 p-6 shadow-panel backdrop-blur-xl md:p-8"
+          className="flex w-full flex-col gap-5 rounded-2xl border border-line bg-surface/70 p-6 text-left shadow-panel backdrop-blur-xl md:p-8"
         >
           <div className="flex flex-col gap-2">
             <label htmlFor="name" className={label}>
