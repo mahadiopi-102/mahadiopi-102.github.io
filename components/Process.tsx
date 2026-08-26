@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { motion } from 'motion/react';
 import { Reveal } from '@/components/Reveal';
 import { ProcessVisualPanel } from '@/components/ProcessVisual';
@@ -9,6 +9,19 @@ import { DUR, EASE_OUT, lineWipe, ONCE } from '@/lib/motion';
 import { useTilt } from '@/lib/useTilt';
 import { useCardParticles } from '@/lib/useCardParticles';
 import { CardParticles } from '@/components/CardParticles';
+
+/**
+ * Stable, module-level reference — same reasoning as `ONCE` in lib/motion.ts.
+ * This used to be an inline object literal on the motion.div below. A fresh
+ * object every render is exactly what breaks whileInView: this component's
+ * own onViewportEnter calls setActive on the parent, which re-renders every
+ * sibling card, which recreated this object again on each of them, tearing
+ * down and rebuilding all six observers in a loop. The real-world symptom
+ * was all six cards permanently stuck at opacity: 0 on the live site, even
+ * scrolled fully into view — confirmed by measuring computed opacity after
+ * a real scroll pass, not just visually.
+ */
+const PROCESS_STEP_VIEWPORT = { once: true, amount: 0.5, margin: '-20% 0px -20% 0px' } as const;
 
 function ProcessStepCard({
   step,
@@ -33,7 +46,7 @@ function ProcessStepCard({
         particles.onMouseLeave();
       }}
       onViewportEnter={onEnter}
-      viewport={{ amount: 0.5, margin: '-20% 0px -20% 0px' }}
+      viewport={PROCESS_STEP_VIEWPORT}
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: DUR.base, ease: EASE_OUT }}
@@ -59,6 +72,7 @@ function ProcessStepCard({
 
 export function Process() {
   const [active, setActive] = useState(0);
+  const onStepEnter = useCallback((i: number) => setActive(i), []);
 
   return (
     <section id="process" className="mx-auto w-full max-w-[1160px] border-t border-line px-6 py-24">
@@ -119,7 +133,7 @@ export function Process() {
 
         <div className="flex flex-col gap-16">
           {PROCESS_STEPS.map((step, i) => (
-            <ProcessStepCard key={step.title} step={step} index={i} onEnter={() => setActive(i)} />
+            <ProcessStepCard key={step.title} step={step} index={i} onEnter={() => onStepEnter(i)} />
           ))}
         </div>
       </div>
