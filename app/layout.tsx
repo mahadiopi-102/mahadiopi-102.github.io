@@ -12,12 +12,12 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Mahadi Hasan Opi, short-form video editor',
   description:
-    'Talking-head Reels, UGC ad creative and podcast repurposing. Individual videos back in 48 hours.',
+    'Talking-head Reels, UGC ad creative and podcast repurposing. Individual videos back in 24 hours.',
   metadataBase: SITE.url ? new URL(SITE.url) : undefined,
   openGraph: {
     title: 'Mahadi Hasan Opi, short-form video editor',
     description:
-      'Talking-head Reels, UGC ad creative, podcast cuts. Back in 48 hours.',
+      'Talking-head Reels, UGC ad creative, podcast cuts. Back in 24 hours.',
     images: ['/og.jpg'],
     type: 'website',
   },
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Mahadi Hasan Opi, short-form video editor',
     description:
-      'Talking-head Reels, UGC ad creative, podcast cuts. Back in 48 hours.',
+      'Talking-head Reels, UGC ad creative, podcast cuts. Back in 24 hours.',
     images: ['/og.jpg'],
   },
 };

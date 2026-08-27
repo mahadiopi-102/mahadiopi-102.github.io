@@ -65,7 +65,7 @@ export function Hero() {
                 animate="visible"
                 transition={{ delay: 0.1 }}
               >
-                back in <span className="text-amber">48 hours</span>.
+                back in <span className="text-amber">24 hours</span>.
               </motion.span>
             </span>
           </h1>

@@ -20,7 +20,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'How fast do I get videos back?',
-    a: 'Individual videos within 48 hours of receiving footage. Larger batches come back in rolling groups of 3 to 4 as they finish, so you are reviewing the first cuts while the rest are still being edited.',
+    a: 'Individual videos within 24 hours of receiving footage. Larger batches come back in rolling groups of 3 to 4 as they finish, so you are reviewing the first cuts while the rest are still being edited.',
   },
   {
     q: 'What do I need to send before we start?',

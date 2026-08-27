@@ -80,7 +80,7 @@ export const PROCESS_STEPS: ProcessStep[] = [
  * 72h to a client who would have accepted it.
  */
 export const TURNAROUND = [
-  { value: '48h', label: 'Individual videos back within 48 hours of receiving footage.' },
+  { value: '24h', label: 'Individual videos back within 24 hours of receiving footage.' },
   { value: '24h', label: 'Revisions returned within 24 hours of your feedback.' },
   { value: '3-4', label: 'Batches delivered in rolling groups as they finish, not all at the end.' },
 ] as const;
