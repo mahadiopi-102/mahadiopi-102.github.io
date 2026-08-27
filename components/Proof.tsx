@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { reveal, lineWipe, stagger, ONCE } from '@/lib/motion';
 import { CountUp } from '@/components/CountUp';
 import Image from 'next/image';
+import { SITE } from '@/content/site';
 
 function VerifiedIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -39,12 +40,16 @@ export function Proof() {
 
   return (
     <section id="proof" className="mx-auto w-full max-w-[1160px] scroll-mt-28 px-6 py-24">
-      <motion.div
+      <motion.a
+        href={SITE.upwork}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="View Mahadi Hasan Opi's verified profile on Upwork"
         variants={reveal}
         initial="hidden"
         whileInView="visible"
         viewport={ONCE}
-        className="glass-card overflow-hidden rounded-[2rem] border border-line bg-[#0a0a0a] shadow-panel"
+        className="glass-card block overflow-hidden rounded-[2rem] border border-line bg-[#0a0a0a] shadow-panel transition-colors duration-fast hover:border-amber/40"
       >
         {/* Top Header Section */}
         <div className="flex flex-col gap-6 p-8 md:flex-row md:items-start md:p-12 lg:p-16">
@@ -121,7 +126,7 @@ export function Proof() {
             ))}
           </motion.ul>
         </div>
-      </motion.div>
+      </motion.a>
     </section>
   );
 }

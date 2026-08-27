@@ -85,7 +85,14 @@ export function Hero() {
                   </svg>
                 ))}
               </div>
-              <span className="whitespace-nowrap text-small font-medium text-white/80">Top Rated on Upwork</span>
+              <a
+              href={SITE.upwork}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="whitespace-nowrap text-small font-medium text-white/80 underline decoration-white/30 underline-offset-4 transition-colors duration-fast hover:text-white hover:decoration-white/60"
+            >
+              Top Rated on Upwork
+            </a>
             </div>
             <div className="flex items-center gap-3">
               <span className="hidden text-white/30 sm:inline">•</span>

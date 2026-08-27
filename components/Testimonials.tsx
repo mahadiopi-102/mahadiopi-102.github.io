@@ -6,6 +6,7 @@ import { Reveal } from '@/components/Reveal';
 import { stagger, reveal } from '@/lib/motion';
 import { motion } from 'motion/react';
 import { TESTIMONIALS, type Testimonial } from '@/content/testimonials';
+import { SITE } from '@/content/site';
 import { useTilt } from '@/lib/useTilt';
 import { useCardParticles } from '@/lib/useCardParticles';
 import { CardParticles } from '@/components/CardParticles';
@@ -84,11 +85,14 @@ export function Testimonials() {
           <h2 className="max-w-[24ch] text-section font-bold text-ink">
             Five completed Upwork contracts.
           </h2>
-          {/* Not a link for now, on Opi's request — text stays but it
-              shouldn't redirect anywhere yet. */}
-          <span className="glow-breathe inline-flex items-center gap-1.5 rounded-full border border-amber/40 bg-amber-dim px-3.5 py-1.5 text-small text-ink-2">
+          <a
+            href={SITE.upwork}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glow-breathe inline-flex items-center gap-1.5 rounded-full border border-amber/40 bg-amber-dim px-3.5 py-1.5 text-small text-ink-2 transition-colors duration-fast hover:border-amber/70 hover:text-ink"
+          >
             Verify on Upwork
-          </span>
+          </a>
         </div>
       </Reveal>
 
