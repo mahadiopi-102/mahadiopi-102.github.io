@@ -293,32 +293,6 @@
   transform: translateX(100%);
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -200%;
-  }
-  100% {
-    background-position: 200%;
-  }
-}
-.gradient-text-animated {
-  -webkit-text-fill-color: transparent;
-  background: linear-gradient(
-      90deg,
-      var(--ink) 0%,
-      var(--ink) 15%,
-      var(--amber) 30%,
-      var(--ink) 50%,
-      var(--amber) 70%,
-      var(--ink) 85%,
-      var(--ink) 100%
-    )
-    0 0 / 220%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: shimmer 16s linear infinite;
-}
-
 @keyframes particle-float {
   0% {
     opacity: 0;
@@ -603,7 +577,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .glow-breathe,
-  .gradient-text-animated,
   .glass-card::before,
   .particle,
   .hover-magnetic,
@@ -619,4 +592,19 @@
     animation: none !important;
     opacity: 0 !important;
   }
+  .marquee-row {
+    animation: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   MARQUEE — testimonial screenshot scroll
+   ═══════════════════════════════════════════════════════════════════════ */
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
 }

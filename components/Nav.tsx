@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { ClockChip } from '@/components/ClockChip';
 import { NAV_LINKS } from '@/content/nav';
 import { SITE } from '@/content/site';
 
@@ -48,6 +49,7 @@ export function Nav() {
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">
+          <ClockChip />
           <ThemeToggle />
           <a
             href="#contact"

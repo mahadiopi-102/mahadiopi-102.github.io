@@ -32,26 +32,39 @@ export function VideoLightboxProvider({ children }: { children: ReactNode }) {
             <div className="relative w-full max-w-3xl transition-[transform,opacity] duration-200 data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0">
               <div className="aspect-video w-full overflow-hidden rounded-xl border border-line bg-black">
                 {youtubeId && (
-                  <iframe
-                    key={youtubeId}
-                    src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1`}
-                    title="Video"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="size-full"
-                  />
+                  youtubeId.endsWith('.mp4') ? (
+                    <video
+                      key={youtubeId}
+                      src={youtubeId}
+                      autoPlay
+                      controls
+                      playsInline
+                      className="size-full outline-none"
+                    />
+                  ) : (
+                    <iframe
+                      key={youtubeId}
+                      src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1`}
+                      title="Video"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="size-full"
+                    />
+                  )
                 )}
               </div>
               <div className="mt-3 flex items-center justify-between">
-                <a
-                  href={`https://www.youtube.com/watch?v=${youtubeId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-small text-ink-3 transition-colors duration-fast hover:text-ink"
-                >
-                  Open on YouTube
-                  <ArrowUpRightIcon className="size-3.5" />
-                </a>
+                {youtubeId && !youtubeId.endsWith('.mp4') ? (
+                  <a
+                    href={`https://youtube.com/watch?v=${youtubeId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-small text-ink-3 transition-colors duration-fast hover:text-ink"
+                  >
+                    Open on YouTube
+                    <ArrowUpRightIcon className="size-3.5" />
+                  </a>
+                ) : <div />}
                 <Dialog.Close
                   aria-label="Close"
                   className="flex size-9 items-center justify-center rounded-full border border-line bg-surface text-ink-2 transition-colors duration-fast hover:text-ink"

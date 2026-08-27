@@ -6,6 +6,7 @@ import { Scrubber } from '@/components/Scrubber';
 import { Nav } from '@/components/Nav';
 import { Footer } from '@/components/Footer';
 import { VideoLightboxProvider } from '@/components/VideoLightbox';
+import { PageLoader } from '@/components/PageLoader';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -68,6 +69,8 @@ try {
 const GEO_GATE = `
 (function () {
   try {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return;
+    
     var params = new URLSearchParams(window.location.search);
     if (params.get('preview') === '1') {
       localStorage.setItem('opi-allow', '1');
@@ -132,6 +135,7 @@ export default function RootLayout({
             check: transforms are dropped for those users, opacity still
             fades, which is the correct behaviour. */}
         <MotionConfig reducedMotion="user">
+          <PageLoader />
           <VideoLightboxProvider>
             <Scrubber />
             <Nav />

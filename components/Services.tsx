@@ -34,7 +34,7 @@ export function Services() {
   const [hovered, setHovered] = useState(0);
 
   return (
-    <section id="services" className="mx-auto w-full max-w-[1160px] border-t border-line px-6 py-24">
+    <section id="services" className="mx-auto w-full max-w-[1160px] scroll-mt-28 border-t border-line px-6 py-24">
       <Reveal>
         <h2 className="max-w-[24ch] text-section font-bold text-ink">
           Four formats, one process.

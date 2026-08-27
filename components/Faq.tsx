@@ -9,7 +9,7 @@ import { FAQS } from '@/content/faq';
 
 export function Faq() {
   return (
-    <section id="faq" className="mx-auto w-full max-w-[1160px] border-t border-line px-6 py-24">
+    <section id="faq" className="mx-auto w-full max-w-[1160px] scroll-mt-28 border-t border-line px-6 py-24">
       <Reveal>
         <h2 className="max-w-[24ch] text-section font-bold text-ink">
           What people ask before we start.

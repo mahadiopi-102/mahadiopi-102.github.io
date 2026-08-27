@@ -14,19 +14,19 @@ import { CardParticles } from '@/components/CardParticles';
 function WorkCard({ item, vertical }: { item: ReturnType<typeof laneItems>[number]; vertical: boolean }) {
   const [step, setStep] = useState(0);
   const { open } = useVideoLightbox();
-  const tilt = useTilt();
+  const { ref, style, onMouseMove, onMouseLeave } = useTilt();
   const particles = useCardParticles();
 
   return (
     <motion.div
-      ref={tilt.ref}
-      onMouseMove={tilt.onMouseMove}
+      ref={ref}
+      onMouseMove={onMouseMove}
       onMouseEnter={particles.onMouseEnter}
       onMouseLeave={() => {
-        tilt.onMouseLeave();
+        onMouseLeave();
         particles.onMouseLeave();
       }}
-      style={tilt.style}
+      style={style}
       className={`glass-card group relative shrink-0 overflow-hidden rounded-xl ${
         vertical ? 'w-[200px]' : 'w-[300px]'
       }`}
@@ -44,7 +44,7 @@ function WorkCard({ item, vertical }: { item: ReturnType<typeof laneItems>[numbe
             alt={item.title}
             fill
             sizes={vertical ? '200px' : '300px'}
-            className="object-cover transition-transform duration-base ease-out group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.07]"
             onError={() => setStep((s) => s + 1)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity duration-fast group-hover:opacity-100" />
@@ -61,11 +61,10 @@ function WorkCard({ item, vertical }: { item: ReturnType<typeof laneItems>[numbe
       </button>
 
       <a
-        href={`https://www.youtube.com/watch?v=${item.youtubeId}`}
+        href={`https://youtube.com/watch?v=${item.youtubeId}`}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`Open ${item.title} on YouTube in a new tab`}
-        onClick={(e) => e.stopPropagation()}
         className="absolute right-2 top-2 z-10 flex size-7 items-center justify-center rounded-full border border-line bg-bg/70 text-ink-3 opacity-0 backdrop-blur-sm transition-opacity duration-fast hover:text-ink group-hover:opacity-100"
       >
         <ArrowUpRightIcon className="size-3.5" />
@@ -76,7 +75,7 @@ function WorkCard({ item, vertical }: { item: ReturnType<typeof laneItems>[numbe
 
 export function Work() {
   return (
-    <section id="work" className="mx-auto w-full max-w-[1160px] border-t border-line px-6 py-24">
+    <section id="work" className="mx-auto w-full max-w-[1160px] scroll-mt-28 border-t border-line px-6 py-24">
       <Reveal>
         <h2 className="max-w-[24ch] text-section font-bold text-ink">
           Real edits, real client work.
@@ -85,7 +84,7 @@ export function Work() {
 
       <div className="mt-14 flex flex-col gap-8">
         {LANES.map((lane, i) => (
-          <div key={lane.key} className="sticky" style={{ top: `${80 + i * 16}px` }}>
+          <div key={lane.key} className="md:sticky" style={{ top: `${80 + i * 16}px` }}>
             {/* border-ink/15, not the default border-line -- the site's own
                 --line token is a 9%-opacity hairline, near-invisible at the
                 scale of a whole-card border like the reference's. Bumped
@@ -119,7 +118,7 @@ export function Work() {
                   {lane.meta}
                 </span>
               </div>
-              <div className="-mx-2 flex gap-4 overflow-x-auto px-2 pb-2">
+              <div className="group/lane -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-8 md:gap-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {laneItems(lane.key).map((item) => (
                   <WorkCard key={item.youtubeId} item={item} vertical={lane.vertical} />
                 ))}

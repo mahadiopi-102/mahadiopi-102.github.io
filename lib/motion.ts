@@ -68,5 +68,22 @@ export const lineWipe: Variants = {
   },
 };
 
+/** Per-word reveal. About section only — splits a statement into words
+ *  and walks them in with a short stagger. Words after a threshold index
+ *  get a muted colour class in the component; the motion is the same. */
+export const wordReveal: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: DUR.base, ease: EASE_OUT },
+  },
+};
+
+export const wordStagger: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.035 } },
+};
+
 /** Shared viewport config: nothing on this site animates twice. */
 export const ONCE = { once: true, margin: '-12% 0px' } as const;

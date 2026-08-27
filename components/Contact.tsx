@@ -34,10 +34,10 @@ function ChannelButton({
       rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
       className="group flex flex-col items-center gap-3"
     >
-      <span className="flex size-16 items-center justify-center rounded-full border border-line text-ink-2 transition-colors duration-fast group-hover:border-amber/60 group-hover:text-amber">
+      <span className="glow-breathe flex size-16 items-center justify-center rounded-full border border-amber/30 bg-amber-dim text-ink-2 transition-colors duration-fast group-hover:border-amber/70 group-hover:text-amber">
         {icon}
       </span>
-      <span className="font-mono text-label uppercase tracking-wide text-ink-4 transition-colors duration-fast group-hover:text-ink-2">
+      <span className="font-mono text-label uppercase tracking-wide text-ink-3 transition-colors duration-fast group-hover:text-ink-2">
         {label}
       </span>
     </a>
@@ -82,13 +82,13 @@ export function Contact() {
      labels read almost as large as body copy, which is what stops the card
      feeling like a dense form. */
   const field =
-    'w-full rounded-lg border border-line bg-bg-2/70 px-4 py-3 text-body text-ink outline-none transition-[border-color,box-shadow] duration-fast focus:border-amber focus:shadow-[0_0_16px_var(--amber-glow-2-hover)]';
+    'w-full rounded-xl border border-line/50 bg-surface/50 backdrop-blur-md px-5 py-4 text-body text-ink shadow-[inset_0_2px_8px_rgba(0,0,0,0.1)] outline-none transition-all duration-300 focus:border-amber/70 focus:bg-surface focus:shadow-[0_0_24px_var(--amber-glow-1-hover),inset_0_2px_8px_rgba(0,0,0,0.1)]';
   const label = 'text-lead font-medium text-ink';
 
   return (
     <section
       id="contact"
-      className="relative mx-auto w-full max-w-[1160px] overflow-hidden border-t border-line px-6 pt-24 pb-24 md:pb-0"
+      className="relative mx-auto w-full max-w-[1160px] scroll-mt-28 overflow-hidden border-t border-line px-6 pt-24 pb-24 md:pb-0"
     >
       {/* Ambient wash pushed to the left, behind the portrait. The reference
           turns its whole CTA background blue here; this stays amber, since a
@@ -106,7 +106,7 @@ export function Contact() {
       <div className="relative z-10 mx-auto flex max-w-[820px] flex-col items-center py-8 text-center">
         <Reveal>
           {SITE.availableForWork && (
-            <p className="mb-8 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-label uppercase text-ink-3">
+            <p className="glow-breathe mb-8 inline-flex items-center gap-2 rounded-full border border-amber/40 bg-amber-dim px-3.5 py-1.5 font-mono text-label uppercase text-ink-2">
               <span className="relative flex size-1.5 shrink-0">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber opacity-75" />
                 <span className="relative inline-flex size-1.5 rounded-full bg-amber" />
@@ -218,7 +218,7 @@ export function Contact() {
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="mt-1 w-fit rounded-lg bg-amber px-7 py-3 text-small font-medium text-bg transition-transform duration-fast hover:-translate-y-px active:translate-y-0 active:scale-[0.98] disabled:opacity-60"
+            className="mt-2 w-fit rounded-xl bg-amber px-8 py-4 text-body font-semibold tracking-wide text-bg transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_24px_var(--amber-glow-1-hover)] active:translate-y-0 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60"
           >
             {status === 'submitting' ? 'Sending…' : 'Send message'}
           </button>

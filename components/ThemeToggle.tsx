@@ -13,7 +13,12 @@ export function ThemeToggle() {
   const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
-    setIsDark(document.documentElement.classList.contains('dark'));
+    // Only update if it doesn't match our initial guess to avoid a re-render
+    const currentIsDark = document.documentElement.classList.contains('dark');
+    if (currentIsDark !== isDark) {
+      setTimeout(() => setIsDark(currentIsDark), 0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function toggle() {

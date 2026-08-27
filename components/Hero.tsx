@@ -2,43 +2,51 @@
 
 import Image from 'next/image';
 import { motion } from 'motion/react';
-import { lineWipe, stagger, revealLeft, revealRight } from '@/lib/motion';
+import { lineWipe, stagger, revealLeft, reveal } from '@/lib/motion';
+import { HeroLiquid } from '@/components/HeroLiquid';
 import { SITE } from '@/content/site';
-import { LANES } from '@/content/work';
 import { Particles } from '@/components/Particles';
+import { ArrowDownIcon } from 'lucide-react';
 
-/**
- * Follows the reference portfolio Opi shared. The one thing an earlier pass
- * got wrong: that reference's warmth comes from the photograph itself — a
- * real studio-lit backdrop occupying most of the hero, fading into the page
- * only at its left edge. Cutting the subject out and floating him over a
- * separately-painted CSS glow (the previous version) reads as a pasted
- * sticker, not a photograph, no matter how well-tuned the glow is. This
- * version uses the full, uncropped photo as a full-bleed background layer
- * instead, exactly like the reference does.
- */
 export function Hero() {
   return (
     <section
-      id="top"
-      className="relative w-full overflow-hidden pt-24 md:pt-16"
+      id="home"
+      className="relative flex min-h-[92dvh] w-full flex-col overflow-hidden rounded-b-[2rem]"
+      style={{
+        background: 'linear-gradient(to right, #050505 0%, #111111 40%, #3a1c0d 70%, #bd5a31 100%)'
+      }}
     >
-      <Particles className="z-0" />
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/hero-before-cutout.png"
+          alt="Mahadi Hasan Opi"
+          fill
+          sizes="100vw"
+          className="object-contain object-right"
+          priority
+        />
+        <HeroLiquid className="pointer-events-auto absolute inset-0 z-10 w-full h-full" />
+      </div>
 
-      {/* items-end + a tall min-h reads fine on a short viewport but on a
-          tall one it bottom-jams every column and leaves the whole upper
-          section empty -- switching to items-center at md and dropping the
-          min-h from 80dvh distributes the slack instead of dumping all of
-          it above the headline. */}
-      <div className="relative z-20 mx-auto grid w-full max-w-[1160px] grid-cols-1 items-end gap-10 px-6 md:min-h-[62dvh] md:grid-cols-[minmax(0,1fr)_260px] md:items-center md:gap-8">
-        <div className="max-w-[620px] pb-2 md:pb-24">
-          {/* Deliberately below --text-hero's 6rem ceiling. That ceiling was
-              set when the portrait was a 280px side element; at this size the
-              portrait takes the right ~68% of the section, and 6rem forces
-              "back in 48 hours." to break across lines mid-phrase. The
-              reference gets away with 6rem because its headline is a single
-              word. */}
-          <h1 className="text-[clamp(2.6rem,5.4vw,4.4rem)] font-bold leading-[0.95] tracking-[-0.03em] text-ink">
+      <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+      
+      <div className="pointer-events-none relative z-20 mx-auto flex w-full max-w-[1160px] flex-1 flex-col px-6 pb-16 pt-28 lg:pt-32 md:flex-row md:items-center md:justify-between">
+        
+        {/* Left Side Content */}
+        <div className="flex max-w-[720px] flex-col gap-8 lg:gap-10 drop-shadow-md z-10 mt-8 md:mt-12">
+          <motion.div
+            variants={reveal}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 1.8 }}
+            className="flex w-fit items-center gap-2 rounded-full border border-line bg-surface/10 px-3 py-1 backdrop-blur-sm pointer-events-auto"
+          >
+            <div className="h-1.5 w-1.5 rounded-full bg-white/70" />
+            <span className="text-label font-medium text-white/90 uppercase tracking-wider">Independent Editor</span>
+          </motion.div>
+
+          <h1 className="pointer-events-auto text-[clamp(3.5rem,7vw,6.5rem)] font-bold leading-[1.05] tracking-[-0.02em] text-white drop-shadow-2xl">
             <span className="block overflow-hidden">
               <motion.span
                 className="block"
@@ -55,116 +63,85 @@ export function Hero() {
                 variants={lineWipe}
                 initial="hidden"
                 animate="visible"
-                transition={{ delay: 0.08 }}
+                transition={{ delay: 0.1 }}
               >
-                back in{' '}
-                <span className="gradient-text-animated">48 hours</span>.
+                back in <span className="text-amber">48 hours</span>.
               </motion.span>
             </span>
           </h1>
 
-          <motion.p
+          <motion.div
             variants={revealLeft}
             initial="hidden"
             animate="visible"
-            transition={{ delay: 0.3 }}
-            className="mt-6 max-w-[46ch] text-lead text-ink-2"
+            transition={{ delay: 2.1 }}
+            className="flex flex-wrap items-center gap-x-3 gap-y-1.5 pointer-events-auto"
           >
-            Reels, UGC ad creative and podcast cuts for founders, coaches and
-            agencies who publish every week.
-          </motion.p>
+            <div className="flex items-center gap-3">
+              <div className="flex text-amber">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <svg key={i} className="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 2.5l2.9 5.88 6.49.94-4.7 4.58 1.11 6.46L12 17.9l-5.8 3.05 1.1-6.46-4.69-4.58 6.49-.94L12 2.5z"/>
+                  </svg>
+                ))}
+              </div>
+              <span className="whitespace-nowrap text-small font-medium text-white/80">Top Rated on Upwork</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="hidden text-white/30 sm:inline">•</span>
+              <span className="whitespace-nowrap text-small font-medium text-white/60">$100K+ earned · 237 jobs</span>
+            </div>
+          </motion.div>
 
           <motion.div
             variants={stagger}
             initial="hidden"
             animate="visible"
-            transition={{ delayChildren: 0.4 }}
-            className="mt-9 flex flex-wrap items-center gap-4"
+            transition={{ delayChildren: 2.2 }}
+            className="mt-4 flex flex-wrap items-center gap-4"
           >
             <motion.a
               variants={revealLeft}
               href="#contact"
-              className="border-beam-btn rounded-md bg-amber px-6 py-3 text-small font-medium text-bg transition-transform duration-fast hover:-translate-y-px"
+              className="pointer-events-auto inline-flex items-center justify-center gap-2 rounded-md bg-amber px-8 py-4 text-body font-medium text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_24px_var(--amber-glow-1-hover)] active:translate-y-0 active:scale-[0.98]"
             >
               Message me
             </motion.a>
             <motion.a
               variants={revealLeft}
               href="#work"
-              className="dot-border-btn rounded-md border border-line px-6 py-3 text-small font-medium text-ink transition-colors duration-fast hover:border-ink-4"
+              className="pointer-events-auto inline-flex items-center justify-center gap-2 rounded-md border border-white/20 bg-white/10 px-8 py-4 text-body font-medium text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/20 hover:shadow-[0_8px_24px_rgba(255,255,255,0.05)] active:translate-y-0 active:scale-[0.98]"
             >
-              <span className="dash top" aria-hidden="true" />
-              <span className="dash right" aria-hidden="true" />
-              <span className="dash bottom" aria-hidden="true" />
-              <span className="dash left" aria-hidden="true" />
-              <span className="dot top left" aria-hidden="true" />
-              <span className="dot top right" aria-hidden="true" />
-              <span className="dot bottom right" aria-hidden="true" />
-              <span className="dot bottom left" aria-hidden="true" />
-              See the work
+              View Work
+              <ArrowDownIcon className="size-5" />
             </motion.a>
           </motion.div>
         </div>
 
-        <motion.div
-          variants={revealRight}
+        {/* Right Side Glass Card */}
+        <motion.div 
+          variants={reveal}
           initial="hidden"
           animate="visible"
-          transition={{ delay: 0.45 }}
-          /* Hairline outline over a light blur rather than a filled card: it
-             reads through the photo behind it instead of sitting on top like
-             a separate box, matching the reference's translucent panel.
-             self-end (not self-center) so it bottom-aligns with the text
-             column instead of landing at the row's vertical middle --
-             centered put it squarely over his face at this photo's framing.
-             md:mb-6 lifts it slightly off that baseline per Opi's request --
-             mb-14 was tried first and overshot into his mouth/chin, so this
-             is deliberately a smaller nudge, not a return to self-center. */
-          className="w-full max-w-[300px] self-start rounded-2xl border border-line/70 bg-bg/40 p-5 backdrop-blur-xl md:max-w-[260px] md:mb-6 md:self-end"
+          transition={{ delay: 2.4 }}
+          className="pointer-events-auto w-full max-w-[300px] self-start rounded-2xl border border-white/10 bg-black/40 p-5 backdrop-blur-xl md:max-w-[260px] md:mb-6 md:self-end z-10"
         >
-          {SITE.availableForWork && (
-            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-label uppercase text-ink-3">
-              <span className="relative flex size-1.5 shrink-0">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber opacity-75" />
-                <span className="relative inline-flex size-1.5 rounded-full bg-amber" />
-              </span>
-              Available for work
-            </p>
-          )}
-          <p className="text-right text-small font-medium text-ink">
+          <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1 font-mono text-label uppercase text-white/70">
+            <span className="relative flex size-1.5 shrink-0">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber opacity-75"></span>
+              <span className="relative inline-flex size-1.5 rounded-full bg-amber"></span>
+            </span>
+            Available for work
+          </p>
+          <p className="text-right text-small font-medium text-white/90">
             Mahadi Hasan Opi
           </p>
-          <ul className="mt-2 flex flex-col gap-0.5 text-right text-lead text-ink-2">
-            {LANES.map((lane) => (
-              <li key={lane.key}>{lane.title}</li>
-            ))}
+          <ul className="mt-2 flex flex-col gap-0.5 text-right text-lead text-white/70">
+            <li>Talking-head</li>
+            <li>UGC and ads</li>
+            <li>YouTube long-form</li>
           </ul>
         </motion.div>
-      </div>
-
-      {/* Mobile: a normal contained card, after the text in DOM order so it
-          stacks below it in flow. From md up: pulled out of flow entirely
-          and pinned full-bleed to the right, matching the reference. The
-          mask (globals.css, .hero-photo-mask) does the equivalent split --
-          a JS-computed style can't carry a media query, so it has to be a
-          real class. */}
-      {/* md:max-w-[820px] caps the container so it stops growing past a
-          point on very wide viewports. Without it, w-[68%] alone kept
-          scaling the photo up with viewport width while the panel next to
-          it stayed a fixed 260px -- on a wide-but-short window his face grew
-          large enough to reach the panel again even after the collar fix,
-          since the crop's own scale (object-cover against a fixed-pixel
-          source) grows with container width. */}
-      <div className="relative z-0 mx-auto mt-10 aspect-[3/4] w-full max-w-[320px] overflow-hidden rounded-2xl md:absolute md:inset-y-0 md:right-0 md:mx-0 md:mt-0 md:aspect-auto md:w-[68%] md:max-w-[820px] md:overflow-visible md:rounded-none">
-        <Image
-          src="/opi-hero-bg.webp"
-          alt="Mahadi Hasan Opi"
-          fill
-          sizes="(min-width: 768px) 68vw, 100vw"
-          className="hero-photo-mask object-cover"
-          style={{ objectPosition: 'center 20%' }}
-          priority
-        />
       </div>
     </section>
   );

@@ -11,20 +11,20 @@ import { useCardParticles } from '@/lib/useCardParticles';
 import { CardParticles } from '@/components/CardParticles';
 
 function TestimonialCard({ t }: { t: Testimonial }) {
-  const tilt = useTilt();
+  const { ref, style, onMouseMove, onMouseLeave } = useTilt();
   const particles = useCardParticles();
 
   return (
     <motion.div
-      ref={tilt.ref}
-      onMouseMove={tilt.onMouseMove}
+      ref={ref}
+      onMouseMove={onMouseMove}
       onMouseEnter={particles.onMouseEnter}
       onMouseLeave={() => {
-        tilt.onMouseLeave();
+        onMouseLeave();
         particles.onMouseLeave();
       }}
       variants={reveal}
-      style={tilt.style}
+      style={style}
       className="glass-card flex w-[300px] shrink-0 flex-col rounded-xl p-6 snap-start"
     >
       <CardParticles particles={particles.particles} />
@@ -65,15 +65,31 @@ function TestimonialCard({ t }: { t: Testimonial }) {
 export function Testimonials() {
   return (
     <section className="mx-auto w-full max-w-[1160px] border-t border-line px-6 py-24">
-      <Reveal className="flex flex-wrap items-end justify-between gap-4">
-        <h2 className="max-w-[24ch] text-section font-bold text-ink">
-          Five completed Upwork contracts.
-        </h2>
-        {/* Not a link for now, on Opi's request — text stays but it
-            shouldn't redirect anywhere yet. */}
-        <span className="glow-breathe inline-flex items-center gap-1.5 rounded-full border border-amber/40 bg-amber-dim px-3.5 py-1.5 text-small text-ink-2">
-          Verify on Upwork
-        </span>
+      {/*
+       * This used to run a raw-Upwork-screenshot marquee above these same
+       * five reviews as text cards — same data twice, and the screenshots
+       * (Upwork's own green branding) clashed with the rest of the site
+       * and were unreadable at mobile width, per the note in
+       * content/testimonials.ts. One section, real text, screenshot kept
+       * one tap away via "Verify on Upwork" on each card instead.
+       */}
+      <Reveal className="mb-6">
+        <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 font-mono text-label uppercase text-ink-3">
+          <span className="relative flex size-1.5 shrink-0">
+            <span className="relative inline-flex size-1.5 rounded-full bg-amber" />
+          </span>
+          Feedback
+        </p>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <h2 className="max-w-[24ch] text-section font-bold text-ink">
+            Five completed Upwork contracts.
+          </h2>
+          {/* Not a link for now, on Opi's request — text stays but it
+              shouldn't redirect anywhere yet. */}
+          <span className="glow-breathe inline-flex items-center gap-1.5 rounded-full border border-amber/40 bg-amber-dim px-3.5 py-1.5 text-small text-ink-2">
+            Verify on Upwork
+          </span>
+        </div>
       </Reveal>
 
       <motion.div
@@ -91,3 +107,4 @@ export function Testimonials() {
     </section>
   );
 }
+
