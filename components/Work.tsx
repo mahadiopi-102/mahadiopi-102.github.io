@@ -1,9 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { PlayIcon, ArrowUpRightIcon } from 'lucide-react';
+import { PlayIcon, ArrowUpRightIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import { LANES, laneItems, posterFor } from '@/content/work';
 import { useVideoLightbox } from '@/components/VideoLightbox';
@@ -73,6 +73,90 @@ function WorkCard({ item, vertical }: { item: ReturnType<typeof laneItems>[numbe
   );
 }
 
+function WorkLane({ lane, index }: { lane: (typeof LANES)[number]; index: number }) {
+  const scrollerRef = useRef<HTMLDivElement>(null);
+
+  const scrollByCards = (dir: 1 | -1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>(':scope > *');
+    const step = (card?.offsetWidth ?? 300) + 24;
+    el.scrollBy({ left: dir * step * 2, behavior: 'smooth' });
+  };
+
+  return (
+    <div className="md:sticky" style={{ top: `${80 + index * 16}px` }}>
+      {/* border-ink/15, not the default border-line -- the site's own
+          --line token is a 9%-opacity hairline, near-invisible at the
+          scale of a whole-card border like the reference's. Bumped
+          just here, not globally, so the rest of the site's borders
+          (which read fine at that subtlety on smaller elements) are
+          untouched. */}
+      <Reveal className="rounded-2xl border border-ink/15 bg-surface p-7 shadow-panel md:p-10">
+        {/* Big number + "Format" + title on the left, the aspect-ratio
+            badge as a pill on the right -- three lanes is a genuine,
+            small sequence (not a generic per-section eyebrow), so the
+            number earns its place here the way it wouldn't as
+            decoration above every heading on the page. Sized to read
+            at roughly the height of the Format+title+blurb block next
+            to it, same proportion as the reference, not a small badge
+            numeral -- identical across all three lanes (same class,
+            no per-lane branch), so none of them reads smaller. */}
+        <div className="mb-8 flex flex-wrap items-start justify-between gap-6">
+          <div className="flex items-start gap-6">
+            <span className="text-[4.5rem] font-extrabold leading-[0.8] tracking-[-0.02em] text-ink md:text-[6rem]">
+              0{index + 1}
+            </span>
+            <div className="pt-1">
+              <p className="font-mono text-label uppercase tracking-wide text-ink-4">
+                Format
+              </p>
+              <h3 className="mt-1 text-lead font-bold text-ink">{lane.title}</h3>
+              <p className="mt-2 max-w-[52ch] text-small text-ink-3">{lane.blurb}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="shrink-0 rounded-full border border-line px-4 py-2 font-mono text-label uppercase tracking-wide text-ink-3">
+              {lane.meta}
+            </span>
+            {/* Desktop only -- the hidden scrollbar (deliberate, see the
+                lane div below) means a mouse-and-trackpad visitor has no
+                affordance at all without these; touch visitors get the
+                "Swipe for more" hint instead. */}
+            <div className="hidden items-center gap-1.5 md:flex">
+              <button
+                type="button"
+                onClick={() => scrollByCards(-1)}
+                aria-label={`Scroll ${lane.title} left`}
+                className="flex size-8 items-center justify-center rounded-full border border-line text-ink-3 transition-colors duration-fast hover:border-amber/60 hover:text-amber"
+              >
+                <ChevronLeftIcon className="size-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollByCards(1)}
+                aria-label={`Scroll ${lane.title} right`}
+                className="flex size-8 items-center justify-center rounded-full border border-line text-ink-3 transition-colors duration-fast hover:border-amber/60 hover:text-amber"
+              >
+                <ChevronRightIcon className="size-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          ref={scrollerRef}
+          className="group/lane -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-8 md:gap-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        >
+          {laneItems(lane.key).map((item) => (
+            <WorkCard key={item.youtubeId} item={item} vertical={lane.vertical} />
+          ))}
+        </div>
+        <p className="-mt-4 text-label text-ink-4 md:hidden">Swipe for more →</p>
+      </Reveal>
+    </div>
+  );
+}
+
 export function Work() {
   return (
     <section id="work" className="mx-auto w-full max-w-[1160px] scroll-mt-28 border-t border-line px-6 py-24">
@@ -84,47 +168,7 @@ export function Work() {
 
       <div className="mt-14 flex flex-col gap-8">
         {LANES.map((lane, i) => (
-          <div key={lane.key} className="md:sticky" style={{ top: `${80 + i * 16}px` }}>
-            {/* border-ink/15, not the default border-line -- the site's own
-                --line token is a 9%-opacity hairline, near-invisible at the
-                scale of a whole-card border like the reference's. Bumped
-                just here, not globally, so the rest of the site's borders
-                (which read fine at that subtlety on smaller elements) are
-                untouched. */}
-            <Reveal className="rounded-2xl border border-ink/15 bg-surface p-7 shadow-panel md:p-10">
-              {/* Big number + "Format" + title on the left, the aspect-ratio
-                  badge as a pill on the right -- three lanes is a genuine,
-                  small sequence (not a generic per-section eyebrow), so the
-                  number earns its place here the way it wouldn't as
-                  decoration above every heading on the page. Sized to read
-                  at roughly the height of the Format+title+blurb block next
-                  to it, same proportion as the reference, not a small badge
-                  numeral -- identical across all three lanes (same class,
-                  no per-lane branch), so none of them reads smaller. */}
-              <div className="mb-8 flex flex-wrap items-start justify-between gap-6">
-                <div className="flex items-start gap-6">
-                  <span className="text-[4.5rem] font-extrabold leading-[0.8] tracking-[-0.02em] text-ink md:text-[6rem]">
-                    0{i + 1}
-                  </span>
-                  <div className="pt-1">
-                    <p className="font-mono text-label uppercase tracking-wide text-ink-4">
-                      Format
-                    </p>
-                    <h3 className="mt-1 text-lead font-bold text-ink">{lane.title}</h3>
-                    <p className="mt-2 max-w-[52ch] text-small text-ink-3">{lane.blurb}</p>
-                  </div>
-                </div>
-                <span className="shrink-0 rounded-full border border-line px-4 py-2 font-mono text-label uppercase tracking-wide text-ink-3">
-                  {lane.meta}
-                </span>
-              </div>
-              <div className="group/lane -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-8 md:gap-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                {laneItems(lane.key).map((item) => (
-                  <WorkCard key={item.youtubeId} item={item} vertical={lane.vertical} />
-                ))}
-              </div>
-            </Reveal>
-          </div>
+          <WorkLane key={lane.key} lane={lane} index={i} />
         ))}
       </div>
     </section>
