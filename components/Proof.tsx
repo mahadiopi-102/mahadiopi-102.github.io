@@ -53,7 +53,7 @@ export function Proof() {
       >
         {/* Top Header Section */}
         <div className="flex flex-col gap-6 p-8 md:flex-row md:items-start md:p-12 lg:p-16">
-          <div className="relative shrink-0">
+          <div className="relative w-fit shrink-0 self-start">
             <div className="relative h-24 w-24 overflow-hidden rounded-full border-2 border-surface bg-line md:h-32 md:w-32">
               <Image 
                 src="/upwork-avatar.jpg" 
@@ -62,7 +62,7 @@ export function Proof() {
                 className="object-cover"
               />
             </div>
-            <div className="absolute right-0 top-0 h-6 w-6 rounded-full border-4 border-[#0a0a0a] bg-[#14a800]" />
+            <div className="absolute bottom-0.5 right-0.5 h-6 w-6 rounded-full border-4 border-[#0a0a0a] bg-[#14a800]" />
           </div>
 
           <div className="flex flex-col gap-3">
