@@ -72,7 +72,17 @@ export function Nav() {
             >
               <MenuIcon />
             </Button>
-            <SheetContent side="right" className="group w-4/5 bg-surface px-2">
+            <SheetContent
+              side="right"
+              className="group w-4/5 bg-surface px-2"
+              /* Base UI auto-focuses the first link on open, and the
+                 site's global :focus-visible ring renders around it --
+                 harmless for a keyboard user tabbing in, but on a tap
+                 (the overwhelming case for a hamburger button) it reads
+                 as "Proof" being pre-selected/active for no reason.
+                 Only move visible focus for real keyboard opens. */
+              initialFocus={(openType) => openType === 'keyboard'}
+            >
               <SheetHeader>
                 <SheetTitle className="font-mono text-small text-ink">
                   Opi<span className="text-amber">.</span>recut
